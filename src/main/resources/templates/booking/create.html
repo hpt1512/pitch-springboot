@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>PITCH</title>
+    <!--    Link-->
+    <div th:insert="~{template.html::link}"></div>
+</head>
+<body>
+<div class="app">
+    <!--    Header-->
+    <div th:insert="~{template.html::header}"></div>
+    <!-- Content -->
+    <div class="content row my-3 mx-lg-5">
+        <div class="col-1">
+
+        </div>
+        <div class="col-8">
+            <h5 class="text-danger my-3">Đặt sân <span th:text="${pitch.name}"></span></h5>
+            <form th:action="@{/booking/create}" method="post" th:object="${booking}">
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">ID Pitch</label>
+                    <input type="text" class="form-control" th:field="*{idPitch}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">ID User</label>
+                    <input type="text" class="form-control" th:field="*{idUser}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Ngày</label>
+                    <input type="date" class="form-control" th:field="*{date}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Khung giờ</label>
+                    <input type="text" class="form-control" th:field="*{time}">
+
+<!--                    <select class="form-select" aria-label="Default select example" th:field="*{time}">-->
+<!--                        <option class="text-uppercase" th:each="time: ${timeList}" th:text="${time}"></option>-->
+<!--                    </select>-->
+
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Giá</label>
+                    <input type="text" class="form-control" th:field="*{price}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Ghi chú</label>
+                    <input type="text" class="form-control" th:field="*{description}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Voucher</label>
+                    <input type="text" class="form-control" th:field="*{idVoucher}">
+                </div>
+                <button type="submit" class="btn btn-primary">Tạo</button>
+            </form>
+
+        </div>
+        <div class="col-3">
+
+        </div>
+    </div>
+</div>
+<!--    JS-->
+<div th:insert="~{template.html::script-js}"></div>
+</body>
+</html>

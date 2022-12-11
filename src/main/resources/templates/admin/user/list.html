@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ADMIN - USER</title>
+    <!--    Link-->
+    <div th:insert="~{template.html::link}"></div>
+</head>
+<body>
+<div class="app">
+    <!--    Header-->
+    <div th:insert="~{template.html::header}"></div>
+    <!-- Content -->
+    <div class="content row my-3 mx-3">
+        <div class="col-2">
+            <!--    Menu-->
+            <div th:insert="~{template.html::menu_left}"></div>
+        </div>
+        <div class="col-10">
+            <h4 class="text-danger">DANH SÁCH NGƯỜI DÙNG</h4>
+            <div class="btn-group my-3 d-flex justify-content-between" role="group" aria-label="Basic mixed styles example">
+                <a href="/admin-users?action=create">
+                    <button type="button" class="btn btn-success"><i class="bi bi-plus-circle me-2"></i>Thêm mới</button>
+                </a>
+                <form class="d-flex" method="post" action="/admin-users?action=find">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="input_find">
+                    <button class="btn btn-success w-50" type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Password</th>
+                    <th scope="col">Quyền</th>
+                    <th scope="col">Họ tên</th>
+                    <th scope="col">Hình ảnh</th>
+                    <th scope="col">SĐT</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Địa chỉ</th>
+                    <th scope="col">Điểm tích luỹ</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                    <tr class="align-middle" th:each="user, iter: ${userList}" th:object="${user}">
+                        <th scope="row" th:text="${iter.count}"></th>
+                        <td th:text="*{id}"></td>
+                        <td th:text="*{username}"></td>
+                        <td th:text="*{password}"></td>
+                        <td th:text="*{role.name}"></td>
+                        <td th:text="*{fullName}"></td>
+                        <td><img style="width: 65px; height: 65px;" th:src="@{'/public/img/user/' + *{image}}" alt=""/></td>
+                        <td th:text="*{phoneNumber}"></td>
+                        <td th:text="*{email}"></td>
+                        <td th:text="*{address}"></td>
+                        <td th:text="*{point}"></td>
+                        <td class="px-4">
+                            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                <a href="/admin-users?action=edit&id=${user.getId()}"><button type="button" class="btn btn-sm btn-warning mx-1">Sửa</button></a>
+                                <button type="button" onclick="infoDelete('${user.getId()}','${user.getUsername()}')"
+                                        class="btn btn-sm btn-danger mx-1" data-bs-toggle="modal"
+                                        data-bs-target="#exampleModal">
+                                    Xoá
+                                </button>
+                            </div>
+                        </td>
+
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<!--    JS-->
+<div th:insert="~{template.html::script-js}"></div>
+</body>
+</html>

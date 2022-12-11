@@ -1,0 +1,15 @@
+.admin__menu__left {
+    border-radius: 0;
+}
+
+.admin__menu__left li:hover {
+    cursor: pointer;
+    font-size: 105%;
+}
+
+.cursor__hover:hover {
+    cursor: pointer;
+    color: green!important;
+    font-weight: bold;
+    font-size: 105%;
+}

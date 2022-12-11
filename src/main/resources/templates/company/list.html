@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>COMPANY</title>
+    <!--    Link-->
+    <div th:insert="~{template.html::link}"></div>
+</head>
+<body>
+<div class="app">
+    <!--    Header-->
+    <div th:insert="~{template.html::header}"></div>
+    <!-- Content -->
+    <div class="content row my-3 mx-lg-5">
+        <div class="col-3">
+            <ul class="list-unstyled border border-success p-2">
+                <h6 class="text-success fw-bold p-2"><i class="bi bi-geo-alt-fill me-2"></i>Quận/Huyện</h6>
+                <li th:each="location, iter: ${locationList}" th:object="${location}">
+                    <a class="text-decoration-none" href="">
+                        <div class="py-2 mx-3 text-black cursor__hover">
+                            <i class="bi bi-caret-right-fill me-2"></i>
+                            <span th:text="*{name}"></span>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="col-9">
+            <form class="input-group flex-nowrap">
+                <input type="text" class="form-control" placeholder="Nhập tên sân hoặc địa chỉ để tìm kiếm">
+                <button type="button" class="btn btn-success">Tìm</button>
+            </form>
+            <ul class="list-unstyled">
+
+                    <li class="py-2 my-2 bg-light d-flex" th:each="company, iter: ${companyList}" th:object="${company}">
+                        <img class="p-2" th:src="@{'/public/img/company/' + *{image}}" alt="" style="border-radius: 20px; width: 280px; height: 220px">
+                        <div class="ms-3 w-100">
+                            <span class="d-block my-3 text-danger fw-bold fs-5" th:text="*{name}"></span>
+
+
+                            <span class="d-block  my-3 text-secondary" style="font-weight: 500">
+                                <i class="bi bi-geo-alt-fill me-2"></i>
+                                <span th:text="${company.location.name}"></span>
+                                <span>(</span>
+                                <span th:text="*{address}"></span>
+                                <span>)</span>
+                            </span>
+
+                            <span class="d-block mb-5 text-success fw-bold">
+                                <i class="bi bi-telephone-fill me-2"></i>
+                                <span th:text="*{phoneNumber}"></span>
+                            </span>
+
+                            <a th:href="@{/company/{id}/pitch(id = *{id})}">
+                                <button type="button" class="btn btn-success float-end me-3 pe-3">
+                                    <i class="bi bi-arrow-right me-2"></i>
+                                    Chi tiết
+                                </button>
+                            </a>
+                        </div>
+                    </li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+<!--    JS-->
+<div th:insert="~{template.html::script-js}"></div>
+</body>
+</html>
