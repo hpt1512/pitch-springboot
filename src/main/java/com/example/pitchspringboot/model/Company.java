@@ -7,7 +7,7 @@ public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
     @Column(name = "`name`", nullable = false, columnDefinition = "varchar(100)")
     private String name;
     @Column(name = "image", columnDefinition = "varchar(45)")
@@ -31,7 +31,7 @@ public class Company {
     public Company() {
     }
 
-    public Company(int id, String name, String image, String phoneNumber, String email, String address, String mapUrl, Location location, User user) {
+    public Company(Integer id, String name, String image, String phoneNumber, String email, String address, String mapUrl, Location location, User user) {
         this.id = id;
         this.name = name;
         this.image = image;
@@ -43,11 +43,11 @@ public class Company {
         this.user = user;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

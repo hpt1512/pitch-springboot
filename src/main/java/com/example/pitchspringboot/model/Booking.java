@@ -1,5 +1,8 @@
 package com.example.pitchspringboot.model;
 
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.sql.Time;
 import java.util.Date;
@@ -9,7 +12,7 @@ public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
     @ManyToOne
     @JoinColumn(name = "id_pitch", nullable = false)
     private Pitch pitch;
@@ -17,23 +20,24 @@ public class Booking {
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
     @Column(name = "`date`", nullable = false)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
     @Column(name = "`time`", nullable = false, columnDefinition = "varchar(12)")
     private String time;
     @Column(name = "price", nullable = false)
-    private int price;
+    private Integer price;
     @Column(name = "note", columnDefinition = "varchar(100)")
     private String note;
     @ManyToOne
-    @JoinColumn(name = "id_voucher")
+    @JoinColumn(name = "id_voucher", nullable = true)
     private Voucher voucher;
     @Column(name = "`status`", columnDefinition = "int default 0")
-    private int status;
+    private Integer status;
 
     public Booking() {
     }
 
-    public Booking(int id, Pitch pitch, User user, Date date, String time, int price, String note, Voucher voucher, int status) {
+    public Booking(Integer id, Pitch pitch, User user, Date date, String time, Integer price, String note, Voucher voucher, Integer status) {
         this.id = id;
         this.pitch = pitch;
         this.user = user;
@@ -45,11 +49,11 @@ public class Booking {
         this.status = status;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -85,11 +89,11 @@ public class Booking {
         this.time = time;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
@@ -109,11 +113,11 @@ public class Booking {
         this.voucher = voucher;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 }

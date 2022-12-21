@@ -7,15 +7,15 @@ public class Pitch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
     @Column(name = "`name`", nullable = false, columnDefinition = "varchar(45)")
     private String name;
     @Column(name = "people_max", nullable = false)
-    private int peopleMax;
+    private Integer peopleMax;
     @Column(name = "price", nullable = false)
-    private int price;
+    private Integer price;
     @Column(name = "`status`", columnDefinition = "int default 0")
-    private int status;
+    private Integer status;
     @ManyToOne
     @JoinColumn(name = "id_company", nullable = false)
     private Company company;
@@ -23,7 +23,7 @@ public class Pitch {
     public Pitch() {
     }
 
-    public Pitch(int id, String name, int peopleMax, int price, int status, Company company) {
+    public Pitch(Integer id, String name, Integer peopleMax, Integer price, Integer status, Company company) {
         this.id = id;
         this.name = name;
         this.peopleMax = peopleMax;
@@ -32,11 +32,11 @@ public class Pitch {
         this.company = company;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -48,27 +48,27 @@ public class Pitch {
         this.name = name;
     }
 
-    public int getPeopleMax() {
+    public Integer getPeopleMax() {
         return peopleMax;
     }
 
-    public void setPeopleMax(int peopleMax) {
+    public void setPeopleMax(Integer peopleMax) {
         this.peopleMax = peopleMax;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public int getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

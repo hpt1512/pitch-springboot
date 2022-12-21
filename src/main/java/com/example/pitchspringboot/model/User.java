@@ -7,7 +7,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
     @Column(name = "username", nullable = false, columnDefinition = "varchar(15)")
     private String username;
     @Column(name = "`password`", nullable = false, columnDefinition = "varchar(45)")
@@ -23,7 +23,7 @@ public class User {
     @Column(name = "address", columnDefinition = "varchar(100)")
     private String address;
     @Column(name = "`point`", columnDefinition = "int default 0")
-    private int point;
+    private Integer point;
     @ManyToOne
     @JoinColumn(name = "id_role", nullable = false)
     private Role role;
@@ -31,7 +31,7 @@ public class User {
     public User() {
     }
 
-    public User(int id, String username, String password, String fullName, String image, String phoneNumber, String email, String address, int point, Role role) {
+    public User(Integer id, String username, String password, String fullName, String image, String phoneNumber, String email, String address, Integer point, Role role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -44,11 +44,11 @@ public class User {
         this.role = role;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -108,11 +108,11 @@ public class User {
         this.address = address;
     }
 
-    public int getPoint() {
+    public Integer getPoint() {
         return point;
     }
 
-    public void setPoint(int point) {
+    public void setPoint(Integer point) {
         this.point = point;
     }
 

@@ -6,29 +6,29 @@ import javax.persistence.*;
 public class Voucher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @Column(name = "`name`", nullable = false, columnDefinition = "varchar(45)")
     private String name;
     @Column(name = "`description`", columnDefinition = "varchar(100)")
     private String description;
     @Column(name = "bonus", nullable = false)
-    private int bonus;
+    private Integer bonus;
 
     public Voucher() {
     }
 
-    public Voucher(int id, String name, String description, int bonus) {
+    public Voucher(Integer id, String name, String description, Integer bonus) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.bonus = bonus;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -48,11 +48,11 @@ public class Voucher {
         this.description = description;
     }
 
-    public int getBonus() {
+    public Integer getBonus() {
         return bonus;
     }
 
-    public void setBonus(int bonus) {
+    public void setBonus(Integer bonus) {
         this.bonus = bonus;
     }
 }

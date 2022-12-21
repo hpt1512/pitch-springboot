@@ -19,16 +19,19 @@
                     <a class="text-decoration-none" href="">
                         <div class="py-2 mx-3 text-black cursor__hover">
                             <i class="bi bi-caret-right-fill me-2"></i>
-                            <span th:text="*{name}"></span>
+                            <form class="d-inline-block" th:action="@{/company/findByLocation}" method="get">
+                                <input hidden th:value="*{id}" name="location_id">
+                                <button class="w-100 border border-white bg-white" type="submit" th:text="*{name}"></button>
+                            </form>
                         </div>
                     </a>
                 </li>
             </ul>
         </div>
         <div class="col-9">
-            <form class="input-group flex-nowrap">
-                <input type="text" class="form-control" placeholder="Nhập tên sân hoặc địa chỉ để tìm kiếm">
-                <button type="button" class="btn btn-success">Tìm</button>
+            <form class="input-group flex-nowrap" th:action="@{/company/findByName}" method="get">
+                <input type="text" class="form-control" placeholder="Nhập tên sân bóng để tìm kiếm" name="nameFind">
+                <button type="submit" class="btn btn-success">Tìm</button>
             </form>
             <ul class="list-unstyled">
 

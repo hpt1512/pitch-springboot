@@ -36,4 +36,9 @@ public class BookingServiceImpl implements IBaseService<Booking> {
     public Booking findById(int id) {
         return bookingRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<Booking> findByName(String name) {
+        return null;
+    }
 }

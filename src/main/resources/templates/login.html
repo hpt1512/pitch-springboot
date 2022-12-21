@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>LOGIN</title>
+    <!--    Link-->
+    <div th:insert="~{template.html::link}"></div>
+</head>
+<body>
+<div class="app">
+    <!--    Header-->
+    <div th:insert="~{template.html::header}"></div>
+    <div class="row justify-content-center">
+        <form class="col-6" th:action="@{/doLogin}" method="post" th:object="${login}">
+            <h3 class="text-danger fw-bold py-3">ĐĂNG NHẬP</h3>
+            <div class="mb-3">
+                <label class="form-label text-success fw-bold">Tên đăng nhập</label>
+                <input type="text" class="form-control" th:field="*{username}">
+            </div>
+            <div class="mb-3">
+                <label class="form-label text-success fw-bold">Mật khẩu</label>
+                <input type="password" class="form-control" th:field="*{password}">
+            </div>
+            <span class="text-success" th:text="${mess}"></span><br>
+            <button type="submit" class="btn btn-primary mt-2">Đăng nhập</button>
+        </form>
+    </div>
+</div>
+<!--    JS-->
+<div th:insert="~{template.html::script-js}"></div>
+</body>
+</html>

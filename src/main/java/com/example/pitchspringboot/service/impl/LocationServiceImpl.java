@@ -34,6 +34,11 @@ public class LocationServiceImpl implements IBaseService<Location> {
 
     @Override
     public Location findById(int id) {
+        return locationRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Location> findByName(String name) {
         return null;
     }
 }

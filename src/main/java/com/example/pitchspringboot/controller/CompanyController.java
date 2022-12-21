@@ -5,12 +5,14 @@ import com.example.pitchspringboot.model.Location;
 import com.example.pitchspringboot.model.Pitch;
 import com.example.pitchspringboot.model.User;
 import com.example.pitchspringboot.service.IBaseService;
+import com.example.pitchspringboot.service.impl.CompanyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -18,7 +20,7 @@ import java.util.List;
 @RequestMapping("/company")
 public class CompanyController {
     @Autowired
-    IBaseService<Company> companyService;
+    CompanyServiceImpl companyService;
     @Autowired
     IBaseService<Location> locationService;
     @Autowired
@@ -44,5 +46,21 @@ public class CompanyController {
         model.addAttribute("pitchList", pitchList);
         model.addAttribute("userList", userList);
         return "pitch/list";
+    }
+    @GetMapping("/findByName")
+    public String findCompaniesByName(Model model, @RequestParam("nameFind") String nameFind) {
+        if ("".equals(nameFind)) {
+            return "redirect:/company";
+        }
+        model.addAttribute("companyList", companyService.findByName(nameFind));
+        model.addAttribute("locationList", locationService.findAll());
+        return "company/list";
+    }
+    @GetMapping("/findByLocation")
+    public String findByLocation(Model model, @RequestParam("location_id") int location_id) {
+        Location location = locationService.findById(location_id);
+        model.addAttribute("companyList", companyService.findByLocation(location));
+        model.addAttribute("locationList", locationService.findAll());
+        return "company/list";
     }
 }

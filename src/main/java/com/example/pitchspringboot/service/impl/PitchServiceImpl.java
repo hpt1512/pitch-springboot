@@ -36,4 +36,9 @@ public class PitchServiceImpl implements IBaseService<Pitch> {
     public Pitch findById(int id) {
         return pitchRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<Pitch> findByName(String name) {
+        return null;
+    }
 }

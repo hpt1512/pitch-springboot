@@ -36,4 +36,9 @@ public class UserServiceImpl implements IBaseService<User> {
     public User findById(int id) {
         return userRepository.findById(id).orElse(null);
     }
+
+    @Override
+    public List<User> findByName(String name) {
+        return null;
+    }
 }
