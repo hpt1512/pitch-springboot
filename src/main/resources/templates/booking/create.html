@@ -40,7 +40,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">ID User</label>
-                    <input type="text" class="form-control" th:field="*{user}">
+                    <input readonly type="text" class="form-control" th:field="*{user}">
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Ngày</label>
@@ -50,21 +50,22 @@
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Khung giờ</label>
                     <select class="form-select" aria-label="Default select example" th:field="*{time}">
-                        <option th:each="timeItem: ${timeList}" th:value="${timeItem}" th:text="${timeItem}"></option>
+                        <option th:each="timeItem: ${timeList}" th:value="${timeItem}" th:text="${timeItem}" th:id="time"></option>
                     </select>
                     <span class="text-danger" th:if="${#fields.hasErrors('time')}" th:errors="*{time}"></span>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label text-success fw-bold">Giá</label>
-                    <input readonly type="text" class="form-control" th:field="*{price}">
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Ghi chú</label>
                     <input type="text" class="form-control" th:field="*{note}">
                 </div>
-                <div hidden class="mb-3">
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Giá</label>
+                    <input hidden type="text" class="form-control" th:field="*{price}">
+                    <span class="text-danger fw-bold fs-5 px-5" th:text="*{price + ' VNĐ'}"></span>
+                </div>
+                <div class="mb-3">
                     <label class="form-label text-success fw-bold">Voucher</label>
-                    <input type="text" class="form-control" th:field="*{voucher}">
+                    <input readonly type="text" class="form-control" th:field="*{voucher}">
                 </div>
                 <div hidden class="mb-3">
                     <label class="form-label text-success fw-bold">Status</label>

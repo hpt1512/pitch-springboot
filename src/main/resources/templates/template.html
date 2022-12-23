@@ -16,8 +16,10 @@
                 <a href="/"><img class="w-50" src="/public/img/logo/logo_header.PNG" alt=""></a>
             </div>
             <div class="d-flex">
-                <a href="/login" class="text-decoration-none"><div style="" class="text-white border-end px-2">Đăng nhập</div></a>
-                <a href="/register" class="text-decoration-none"><div class="text-white px-2">Đăng ký</div></a>
+                <a href="#" class="text-decoration-none" th:if="${user != null}"><div class="text-white border-end px-2" th:text="${user.fullName}"></div></a>
+                <a href="/login" class="text-decoration-none" th:if="${user == null}"><div class="text-white border-end px-2">Đăng nhập</div></a>
+                <a href="/register" class="text-decoration-none" th:if="${user == null}"><div class="text-white px-2">Đăng ký</div></a>
+                <a href="/logout" class="text-decoration-none" th:if="${user != null}"><div class="text-white px-2">Đăng xuất</div></a>
             </div>
         </header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -39,7 +41,15 @@
                     </ul>
                     <ul class="navbar-nav mb-2 mb-lg-0 fw-bold">
                         <li class="nav-item px-3">
-                            <a class="nav-link active text-success" href="/admin/user">Quản lý</a>
+                            <div class="nav-link active text-success header__option__btn" id="header__option__btn">
+                                <i class="bi bi-list-ul text-success fw-bold fs-5"></i>
+                                <ul class="list-group header__option__list" id="header__option__list">
+                                    <li class="list-group-item bg-success">Sân bóng của tôi</li>
+                                    <li class="list-group-item bg-success">Đơn đặt sân</li>
+                                    <a class="text-decoration-none" href="/admin/user"><li class="list-group-item bg-success">Quản lý</li></a>
+                                </ul>
+                            </div>
+
                         </li>
                     </ul>
                 </div>
@@ -93,6 +103,16 @@
     </div>
     <div th:fragment="script-js">
         <script src="/public/bootstrap-5.1.3-dist/js/bootstrap.bundle.js"></script>
+        <script>
+            let header__option__btn = document.getElementById("header__option__btn");
+            let header__option__list = document.getElementById("header__option__list");
+            header__option__btn.addEventListener('mouseover', function() {
+                header__option__list.style.display = "block";
+            });
+            header__option__btn.addEventListener('mouseout', function() {
+                header__option__list.style.display = "none";
+            });
+        </script>
     </div>
 </body>
 </html>

@@ -1,24 +1,21 @@
 package com.example.pitchspringboot.validate;
 
 import com.example.pitchspringboot.model.Booking;
+import com.example.pitchspringboot.model.User;
 import com.example.pitchspringboot.service.IBaseService;
-import com.example.pitchspringboot.service.impl.BookingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import static com.fasterxml.jackson.databind.type.LogicalType.DateTime;
-
 @Component
 public class BookingValidate implements Validator {
-//    @Autowired
-//    IBaseService<Booking> bookingService;
+    @Autowired
+    IBaseService<Booking> bookingService;
     @Override
     public boolean supports(Class<?> clazz) {
         return false;
@@ -47,17 +44,6 @@ public class BookingValidate implements Validator {
             }
         }
 
-//        BookingServiceImpl bookingService = new BookingServiceImpl();
-//        List<Booking> bookingList = bookingService.findAll();
-//        for (Booking booking1 : bookingList) {
-//            if (booking.getPitch().equals(booking1.getPitch())) {
-//                if (booking.getDate().compareTo(booking1.getDate()) == 0) {
-//                    if (booking.getPitch().equals(booking1.getTime())) {
-//                        errors.rejectValue("time","time.validate.end",null,"Đã có người đặt");
-//                    }
-//                }
-//            }
-//        }
-
+        List<Booking> bookingList = bookingService.findAll();
     }
 }

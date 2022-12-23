@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -27,10 +28,15 @@ public class CompanyController {
     IBaseService<Pitch> pitchService;
     @Autowired
     IBaseService<User> userService;
+    @Autowired
+    HttpSession session;
     @GetMapping("")
     public String displayPage(Model model) {
         model.addAttribute("locationList", locationService.findAll());
         model.addAttribute("companyList", companyService.findAll());
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
+
         return "company/list";
     }
     @GetMapping("{id}/pitch")
@@ -41,6 +47,8 @@ public class CompanyController {
         List<Pitch> pitchList = pitchService.findAll();
         List<User>  userList = userService.findAll();
 
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
         model.addAttribute("company", company);
         model.addAttribute("locationList", locationList);
         model.addAttribute("pitchList", pitchList);
@@ -54,6 +62,8 @@ public class CompanyController {
         }
         model.addAttribute("companyList", companyService.findByName(nameFind));
         model.addAttribute("locationList", locationService.findAll());
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
         return "company/list";
     }
     @GetMapping("/findByLocation")
@@ -61,6 +71,8 @@ public class CompanyController {
         Location location = locationService.findById(location_id);
         model.addAttribute("companyList", companyService.findByLocation(location));
         model.addAttribute("locationList", locationService.findAll());
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
         return "company/list";
     }
 }

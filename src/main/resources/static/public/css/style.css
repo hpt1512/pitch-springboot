@@ -13,3 +13,20 @@
     font-weight: bold;
     font-size: 105%;
 }
+.header__option__btn {
+    height: 150%;
+    z-index: 99999999;
+    cursor: pointer;
+}
+.header__option__list {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    z-index: 99999999;
+    display: none;
+}
+.header__option__list li {
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
