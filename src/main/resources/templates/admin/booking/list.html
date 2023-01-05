@@ -23,16 +23,18 @@
                     <button type="button" class="btn btn-success"><i class="bi bi-plus-circle me-2"></i>Thêm mới</button>
                 </a>
                 <form class="d-flex" method="post" action="/admin-company?action=find">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="input_find">
+                    <input class="form-control me-2" type="search" placeholder="Công ty" aria-label="Search" name="input_find">
+                    <input class="form-control me-2" type="search" placeholder="Sân" aria-label="Search" name="input_find">
+                    <input class="form-control me-2" type="search" placeholder="Ngày" aria-label="Search" name="input_find">
+                    <input class="form-control me-2" type="search" placeholder="Giờ" aria-label="Search" name="input_find">
                     <button class="btn btn-success w-50" type="submit">Tìm kiếm</button>
                 </form>
             </div>
-
+            <span style="color: blue" class="d-block mb-3 fw-bold" th:if="${mess != null}" th:text="${mess}"></span>
             <table class="table table-striped">
                 <thead>
                 <tr>
                     <th scope="col">STT</th>
-                    <th scope="col">ID</th>
                     <th scope="col">Công ty</th>
                     <th scope="col">Sân</th>
                     <th scope="col">Khách hàng</th>
@@ -41,7 +43,7 @@
                     <th scope="col">Giá</th>
                     <th scope="col">Ghi chú</th>
                     <th scope="col">Voucher</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">Trạng thái</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -49,7 +51,7 @@
 
                 <tr class="align-middle" th:each="booking, iter: ${bookingList}" th:object="${booking}">
                     <th scope="row" th:text="${iter.count}"></th>
-                    <td th:text="*{id}"></td>
+                    <td hidden th:text="*{id}"></td>
                     <td th:text="*{pitch.company.name}"></td>
                     <td th:text="*{pitch.name}"></td>
                     <td th:text="*{user.username}"></td>
@@ -65,19 +67,19 @@
                         <td></td>
                     </th:block>
 
-                    <td th:text="*{status}"></td>
+                    <td class="text-secondary fw-bold" th:if="*{status == 0}">Đang chờ</td>
+                    <td style="color: blue" class="fw-bold" th:if="*{status == 1}">Đã xác nhận</td>
+                    <td style="color: red" class="fw-bold" th:if="*{status == 2}">Đã từ chối</td>
+
                     <td class="px-4">
                         <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                            <button type="button" onclick="infoDelete('${company.getId()}','${company.getName()}')"
-                                    class="btn btn-sm btn-primary mx-1" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
-                                Xác nhận
-                            </button>
-                            <button type="button" onclick="infoDelete('${company.getId()}','${company.getName()}')"
+
+                            <button type="button" th:onclick="infoDelete([[${booking.id}]])"
                                     class="btn btn-sm btn-danger mx-1" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal">
-                                Từ chối
+                                Xoá
                             </button>
+
                         </div>
                     </td>
                 </tr>
@@ -95,7 +97,36 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="/admin/booking/delete" method="get">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">XOÁ ĐƠN ĐẶT SÂN</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input name="id" id="deleteId" hidden>
+                    <span class="text-danger">Xoá đơn đặt sân ID :  </span><span id="deleteName"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">OK</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!--    JS-->
 <div th:insert="~{template.html::script-js}"></div>
+<script>
+    function infoDelete(id) {
+        document.getElementById("deleteName").innerText = id;
+        document.getElementById("deleteId").value = id;
+    }
+</script>
 </body>
 </html>

@@ -3,6 +3,7 @@ package com.example.pitchspringboot.validate;
 import com.example.pitchspringboot.model.Booking;
 import com.example.pitchspringboot.model.User;
 import com.example.pitchspringboot.service.IBaseService;
+import com.example.pitchspringboot.service.impl.BookingServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -15,7 +16,7 @@ import java.util.List;
 @Component
 public class BookingValidate implements Validator {
     @Autowired
-    IBaseService<Booking> bookingService;
+    BookingServiceImpl bookingService;
     @Override
     public boolean supports(Class<?> clazz) {
         return false;
@@ -44,6 +45,11 @@ public class BookingValidate implements Validator {
             }
         }
 
-        List<Booking> bookingList = bookingService.findAll();
+        List<Booking> bookingCheck = bookingService.findByPitchAndDateAndTime(booking.getPitch(), booking.getDate(), booking.getTime());
+
+        if (bookingCheck.size() != 0) {
+            errors.rejectValue("time","time.validate",null,"Đã có người đặt");
+        }
+
     }
 }

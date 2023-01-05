@@ -33,12 +33,13 @@
                         </div>
 
             <h5 class="text-danger my-3">Đặt sân <span th:text="${pitch.name}"></span></h5>
+
             <form th:action="@{/booking/create}" method="post" th:object="${booking}">
-                <div class="mb-3">
+                <div hidden class="mb-3">
                     <label class="form-label text-success fw-bold">ID Pitch</label>
                     <input readonly type="text" class="form-control" th:field="*{pitch}">
                 </div>
-                <div class="mb-3">
+                <div hidden class="mb-3">
                     <label class="form-label text-success fw-bold">ID User</label>
                     <input readonly type="text" class="form-control" th:field="*{user}">
                 </div>
@@ -63,7 +64,8 @@
                     <input hidden type="text" class="form-control" th:field="*{price}">
                     <span class="text-danger fw-bold fs-5 px-5" th:text="*{price + ' VNĐ'}"></span>
                 </div>
-                <div class="mb-3">
+                <span th:if="*{voucher.id == 2}" class="text-danger d-block mb-3">Đã áp dụng mã giảm giá 50.000đ</span>
+                <div hidden class="mb-3">
                     <label class="form-label text-success fw-bold">Voucher</label>
                     <input readonly type="text" class="form-control" th:field="*{voucher}">
                 </div>
@@ -71,7 +73,7 @@
                     <label class="form-label text-success fw-bold">Status</label>
                     <input type="text" class="form-control" th:field="*{status}">
                 </div>
-                <button type="submit" class="btn btn-primary">Tạo</button>
+                <button type="submit" class="btn btn-primary">Đặt sân</button>
             </form>
 
         </div>

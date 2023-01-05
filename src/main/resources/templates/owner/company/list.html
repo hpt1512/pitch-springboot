@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>OWNER - MY COMPANY</title>
+    <!--    Link-->
+    <div th:insert="~{template.html::link}"></div>
+</head>
+<body>
+<div class="app">
+    <!--    Header-->
+    <div th:insert="~{template.html::header}"></div>
+    <!-- Content -->
+    <div class="content row my-3 mx-3">
+        <div class="col-2">
+            <!--    Menu-->
+            <div>
+                <ul class="list-group admin__menu__left">
+                    <a class="text-decoration-none" href="/owner/myCompany">
+                        <li class="list-group-item bg-success text-white fw-bold py-3">SÂN BÓNG CỦA TÔI</li>
+                    </a>
+                    <a class="text-decoration-none" href="/owner/booking">
+                        <li class="list-group-item bg-success text-white fw-bold py-3">QUẢN LÝ ĐƠN ĐẶT SÂN</li>
+                    </a>
+                </ul>
+            </div>
+        </div>
+        <div class="col-10">
+            <h4 class="text-danger">SÂN BÓNG CỦA TÔI</h4>
+            <div class="py-2 my-2 mb-5 bg-light d-flex" th:object="${company}">
+                <img class="p-2" th:src="@{'/public/img/company/' + *{image}}" alt=""
+                     style="border-radius: 20px; width: 280px; height: 220px">
+                <div class="ms-3 w-100">
+                    <span class="d-block my-3 text-danger fw-bold fs-5" th:text="*{name}"></span>
+                    <span class="d-block  my-3 text-secondary" style="font-weight: 500">
+                                <i class="bi bi-geo-alt-fill me-2"></i>
+                                <span th:text="${company.location.name}"></span>
+                                <span>(</span>
+                                <span th:text="*{address}"></span>
+                                <span>)</span>
+                            </span>
+
+                    <span class="d-block mb-5 text-success fw-bold">
+                                <i class="bi bi-telephone-fill me-2"></i>
+                                <span th:text="*{phoneNumber}"></span>
+                            </span>
+                </div>
+            </div>
+            <div class="btn-group my-3 d-flex justify-content-between" role="group"
+                 aria-label="Basic mixed styles example">
+                <a onclick="showFormCreate()">
+                    <button type="button" class="btn btn-success"><i class="bi bi-plus-circle me-2"></i>Thêm mới
+                    </button>
+                </a>
+                <form class="d-flex" method="post" action="/admin-company?action=find">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"
+                           name="input_find">
+                    <button class="btn btn-success w-50" type="submit">Tìm kiếm</button>
+                </form>
+            </div>
+
+            <span style="color: blue" th:text="${mess}"></span>
+
+            <form th:action="@{/owner/myCompany/create}" method="post" th:object="${newPitch}">
+                <table style="display: none" class="table table-striped" id="formCreatePitch">
+                    <tbody>
+                    <tr>
+                        <td style="width: 35%"><input type="text" class="form-control" th:field="*{name}"
+                                                      placeholder="Nhập tên sân"></td>
+                        <td style="width: 35%"><input type="text" class="form-control" th:field="*{peopleMax}"
+                                                      placeholder="Nhập số người"></td>
+                        <td style="width: 35%"><input type="text" class="form-control" th:field="*{price}"
+                                                      placeholder="Nhập giá"></td>
+                        <td hidden><input type="text" class="form-control" th:field="*{status}"></td>
+                        <td hidden><input type="text" class="form-control" th:field="*{company}"></td>
+                        <td>
+                            <button type="submit" class="btn btn-primary">Thêm</button>
+                        </td>
+                        <td style="font-size: 25px; cursor: pointer" onclick="closeFormCreate()"><i
+                                class="bi bi-x-circle p-1 text-danger"></i></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </form>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">STT</th>
+                    <th hidden scope="col">ID</th>
+                    <th scope="col">Sân</th>
+                    <th scope="col">Số người</th>
+                    <th scope="col">Giá</th>
+                    <th hidden scope="col">Trạng thái</th>
+
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr class="align-middle" th:each="pitch, iter: ${pitchList}" th:object="${pitch}">
+                    <th scope="row" th:text="${iter.count}"></th>
+                    <td hidden th:text="*{id}"></td>
+                    <td th:text="*{name}"></td>
+                    <td th:text="*{peopleMax}"></td>
+                    <td th:text="*{price}"></td>
+                    <td hidden th:text="*{status}"></td>
+                    <td class="px-4">
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <a th:href="@{/owner/myCompany/edit/{id}(id=${pitch.id})}"><button type="button" class="btn btn-sm btn-warning mx-1">Sửa</button></a>
+
+                            <button type="button" th:onclick="infoDelete([[${pitch.id}]],[[${pitch.name}]])"
+                                    class="btn btn-sm btn-danger mx-1" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                Xoá
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="/owner/myCompany/delete" method="get">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">XOÁ SÂN BÓNG</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input name="id" id="deleteId" hidden>
+                    <span class="text-danger">Xoá sân bóng  </span><span id="deleteName"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">OK</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--    JS-->
+<div th:insert="~{template.html::script-js}"></div>
+<script>
+    function showFormCreate() {
+        document.getElementById("formCreatePitch").style.display = "block";
+    }
+
+    function closeFormCreate() {
+        document.getElementById("formCreatePitch").style.display = "none";
+    }
+    function infoDelete(id, name) {
+        document.getElementById("deleteName").innerText = name;
+        document.getElementById("deleteId").value = id;
+    }
+</script>
+</body>
+</html>

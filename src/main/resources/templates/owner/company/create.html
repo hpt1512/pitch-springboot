@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>OWNER - MY COMPANY</title>
+    <!--    Link-->
+    <div th:insert="~{template.html::link}"></div>
+</head>
+<body>
+<div class="app">
+    <!--    Header-->
+    <div th:insert="~{template.html::header}"></div>
+    <!-- Content -->
+    <div class="content row my-3 mx-3">
+        <div class="col-2">
+            <!--    Menu-->
+            <div>
+                <ul class="list-group admin__menu__left">
+                    <a class="text-decoration-none" href="/owner/myCompany"><li class="list-group-item bg-success text-white fw-bold py-3">SÂN BÓNG CỦA TÔI</li></a>
+                    <a class="text-decoration-none" href="/owner/booking"><li class="list-group-item bg-success text-white fw-bold py-3">QUẢN LÝ ĐƠN ĐẶT SÂN</li></a>
+                </ul>
+            </div>
+        </div>
+        <div class="col-10">
+            <h4 class="text-danger">SÂN BÓNG CỦA TÔI</h4>
+            <div class="py-2 my-2 mb-5 bg-light d-flex" th:object="${company}">
+                <img class="p-2" th:src="@{'/public/img/company/' + *{image}}" alt="" style="border-radius: 20px; width: 280px; height: 220px">
+                <div class="ms-3 w-100">
+                    <span class="d-block my-3 text-danger fw-bold fs-5" th:text="*{name}"></span>
+                    <span class="d-block  my-3 text-secondary" style="font-weight: 500">
+                                <i class="bi bi-geo-alt-fill me-2"></i>
+                                <span th:text="${company.location.name}"></span>
+                                <span>(</span>
+                                <span th:text="*{address}"></span>
+                                <span>)</span>
+                            </span>
+
+                    <span class="d-block mb-5 text-success fw-bold">
+                                <i class="bi bi-telephone-fill me-2"></i>
+                                <span th:text="*{phoneNumber}"></span>
+                            </span>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</div>
+<!--    JS-->
+<div th:insert="~{template.html::script-js}"></div>
+</body>
+</html>

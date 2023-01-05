@@ -8,10 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -79,7 +79,7 @@ public class BookingController {
     }
     @PostMapping("/create")
     public String createBooking(@Valid @ModelAttribute("booking") Booking booking, BindingResult bindingResult,
-                                Model model) {
+                                Model model, RedirectAttributes redirectAttributes) {
         bookingValidate.validate(booking, bindingResult);
         if (bindingResult.hasErrors()) {
             List<String> timeList = Arrays.asList("15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
@@ -93,6 +93,7 @@ public class BookingController {
             return "booking/create";
         }
         bookingService.insert(booking);
-        return "redirect:/company";
+        redirectAttributes.addFlashAttribute("mess", "Tạo đơn đặt sân thành công");
+        return "redirect:/user/myBooking";
     }
 }

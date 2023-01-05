@@ -13,6 +13,7 @@
     <div class="row justify-content-center">
         <form class="col-6" th:action="@{/login}" method="post" th:object="${login}">
             <h3 class="text-danger fw-bold py-3">ĐĂNG NHẬP</h3>
+            <span style="color: blue" class="d-block mb-3" th:if="${mess != null}" th:text="${mess}"></span>
             <div class="mb-3">
                 <label class="form-label text-success fw-bold">Tên đăng nhập</label>
                 <input type="text" class="form-control" th:field="*{username}">
@@ -22,6 +23,7 @@
                 <input type="password" class="form-control" th:field="*{password}">
             </div>
             <span class="text-danger" th:text="${error}"></span><br>
+            <span class="d-block mb-1">Bạn chưa có tài khoản ? <a th:href="@{/register}">Đăng ký ngay</a></span>
             <button type="submit" class="btn btn-primary mt-2">Đăng nhập</button>
         </form>
     </div>

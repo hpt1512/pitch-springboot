@@ -16,7 +16,7 @@
                 <a href="/"><img class="w-50" src="/public/img/logo/logo_header.PNG" alt=""></a>
             </div>
             <div class="d-flex">
-                <a href="#" class="text-decoration-none" th:if="${user != null}"><div class="text-white border-end px-2" th:text="${user.fullName}"></div></a>
+                <a href="/user/info" class="text-decoration-none" th:if="${user != null}"><div class="text-white border-end px-2" th:text="${user.fullName}"></div></a>
                 <a href="/login" class="text-decoration-none" th:if="${user == null}"><div class="text-white border-end px-2">Đăng nhập</div></a>
                 <a href="/register" class="text-decoration-none" th:if="${user == null}"><div class="text-white px-2">Đăng ký</div></a>
                 <a href="/logout" class="text-decoration-none" th:if="${user != null}"><div class="text-white px-2">Đăng xuất</div></a>
@@ -44,9 +44,10 @@
                             <div class="nav-link active text-success header__option__btn" id="header__option__btn">
                                 <i class="bi bi-list-ul text-success fw-bold fs-5"></i>
                                 <ul class="list-group header__option__list" id="header__option__list">
-                                    <li class="list-group-item bg-success">Sân bóng của tôi</li>
-                                    <li class="list-group-item bg-success">Đơn đặt sân</li>
-                                    <a class="text-decoration-none" href="/admin/user"><li class="list-group-item bg-success">Quản lý</li></a>
+                                    <a class="text-decoration-none" href="/user/info"><li class="list-group-item bg-success">Thông tin cá nhân</li></a>
+                                    <a class="text-decoration-none" href="/owner/myCompany"><li class="list-group-item bg-success">Sân bóng của tôi</li></a>
+                                    <a class="text-decoration-none" href="/user/myBooking"><li class="list-group-item bg-success">Đơn đặt sân</li></a>
+                                    <a class="text-decoration-none" href="/admin/user" th:if="${user != null && user.role.id == 1}"><li class="list-group-item bg-success">Quản lý</li></a>
                                 </ul>
                             </div>
 

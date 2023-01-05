@@ -19,22 +19,20 @@
         <div class="col-10">
             <h4 class="text-danger">DANH SÁCH NGƯỜI DÙNG</h4>
             <div class="btn-group my-3 d-flex justify-content-between" role="group" aria-label="Basic mixed styles example">
-                <a href="/admin-users?action=create">
+                <a href="/admin/user/create">
                     <button type="button" class="btn btn-success"><i class="bi bi-plus-circle me-2"></i>Thêm mới</button>
                 </a>
-                <form class="d-flex" method="post" action="/admin-users?action=find">
+                <form class="d-flex" method="get" th:action="@{/admin/user/find}">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="input_find">
                     <button class="btn btn-success w-50" type="submit">Tìm kiếm</button>
                 </form>
             </div>
-
+            <span style="color: blue" class="d-block mb-3 fw-bold" th:if="${mess != null}" th:text="${mess}"></span>
             <table class="table table-striped">
                 <thead>
                 <tr>
                     <th scope="col">STT</th>
-                    <th scope="col">ID</th>
                     <th scope="col">Username</th>
-                    <th scope="col">Password</th>
                     <th scope="col">Quyền</th>
                     <th scope="col">Họ tên</th>
                     <th scope="col">Hình ảnh</th>
@@ -48,10 +46,15 @@
                 <tbody>
                     <tr class="align-middle" th:each="user, iter: ${userList}" th:object="${user}">
                         <th scope="row" th:text="${iter.count}"></th>
-                        <td th:text="*{id}"></td>
+                        <td hidden th:text="*{id}"></td>
                         <td th:text="*{username}"></td>
-                        <td th:text="*{password}"></td>
-                        <td th:text="*{role.name}"></td>
+                        <td hidden th:text="*{password}"></td>
+
+
+
+                        <td class="text-danger fw-bold" th:if="${user.role.id == 1}" th:text="*{role.name}"></td>
+                        <td class="text-success fw-bold" th:if="${user.role.id == 2}" th:text="*{role.name}"></td>
+
                         <td th:text="*{fullName}"></td>
                         <td><img style="width: 65px; height: 65px;" th:src="@{'/public/img/user/' + *{image}}" alt=""/></td>
                         <td th:text="*{phoneNumber}"></td>
@@ -60,17 +63,18 @@
                         <td th:text="*{point}"></td>
                         <td class="px-4">
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                <a href="/admin-users?action=edit&id=${user.getId()}"><button type="button" class="btn btn-sm btn-warning mx-1">Sửa</button></a>
-                                <button type="button" onclick="infoDelete('${user.getId()}','${user.getUsername()}')"
+                                <a th:href="@{/admin/user/edit/{id}(id=${user.id})}"><button type="button" class="btn btn-sm btn-warning mx-1">Sửa</button></a>
+
+                                <button type="button" th:onclick="infoDelete([[${user.id}]],[[${user.fullName}]])"
                                         class="btn btn-sm btn-danger mx-1" data-bs-toggle="modal"
                                         data-bs-target="#exampleModal">
                                     Xoá
                                 </button>
+
                             </div>
                         </td>
 
                     </tr>
-                </c:forEach>
                 </tbody>
             </table>
             <nav aria-label="Page navigation example">
@@ -85,7 +89,36 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="/admin/user/delete" method="get">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">XOÁ NGƯỜI DÙNG</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input name="id" id="deleteId" hidden>
+                    <span class="text-danger">Xoá người dùng  </span><span id="deleteName"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">OK</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!--    JS-->
 <div th:insert="~{template.html::script-js}"></div>
+<script>
+    function infoDelete(id, name) {
+        document.getElementById("deleteName").innerText = name;
+        document.getElementById("deleteId").value = id;
+    }
+</script>
 </body>
 </html>

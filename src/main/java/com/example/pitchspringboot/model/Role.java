@@ -2,7 +2,7 @@ package com.example.pitchspringboot.model;
 
 import javax.persistence.*;
 
-@Entity(name = "`role`")
+@Entity(name = "role")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

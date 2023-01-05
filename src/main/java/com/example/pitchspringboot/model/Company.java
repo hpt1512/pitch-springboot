@@ -18,7 +18,7 @@ public class Company {
     private String email;
     @Column(name = "address", nullable = false, columnDefinition = "varchar(100)")
     private String address;
-    @Column(name = "map_url")
+    @Column(name = "map_url", columnDefinition = "varchar(800)")
     private String mapUrl;
     @ManyToOne
     @JoinColumn(name = "id_location", nullable = false)

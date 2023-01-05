@@ -19,7 +19,7 @@
         <div class="col-10">
             <h4 class="text-danger">DANH SÁCH CÔNG TY</h4>
             <div class="btn-group my-3 d-flex justify-content-between" role="group" aria-label="Basic mixed styles example">
-                <a href="/admin-company?action=create">
+                <a href="/admin/company/create">
                     <button type="button" class="btn btn-success"><i class="bi bi-plus-circle me-2"></i>Thêm mới</button>
                 </a>
                 <form class="d-flex" method="post" action="/admin-company?action=find">
@@ -27,12 +27,11 @@
                     <button class="btn btn-success w-50" type="submit">Tìm kiếm</button>
                 </form>
             </div>
-
+            <span style="color: blue" class="d-block mb-3 fw-bold" th:if="${mess != null}" th:text="${mess}"></span>
             <table class="table table-striped">
                 <thead>
                 <tr>
                     <th scope="col">STT</th>
-                    <th scope="col">ID</th>
                     <th scope="col">Quận/Huyện</th>
                     <th scope="col">Tên công ty</th>
                     <th scope="col">Hình ảnh</th>
@@ -44,10 +43,9 @@
                 </tr>
                 </thead>
                 <tbody>
-
                     <tr class="align-middle" th:each="company, iter: ${companyList}" th:object="${company}">
                         <th scope="row" th:text="${iter.count}"></th>
-                        <td th:text="*{id}"></td>
+                        <td hidden th:text="*{id}"></td>
                         <td th:text="*{location.name}"></td>
                         <td th:text="*{name}"></td>
                         <td><img style="width: 65px; height: 65px;" th:src="@{'/public/img/company/' + *{image}}" alt=""/></td>
@@ -57,12 +55,14 @@
                         <td th:text="*{user.username}"></td>
                         <td class="px-4">
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                <a href="/admin-company?action=edit&id=${company.getId()}"><button type="button" class="btn btn-sm btn-warning mx-1">Sửa</button></a>
-                                <button type="button" onclick="infoDelete('${company.getId()}','${company.getName()}')"
+                                <a th:href="@{/admin/company/edit/{id}(id=${company.id})}"><button type="button" class="btn btn-sm btn-warning mx-1">Sửa</button></a>
+
+                                <button type="button" th:onclick="infoDelete([[${company.id}]],[[${company.name}]])"
                                         class="btn btn-sm btn-danger mx-1" data-bs-toggle="modal"
                                         data-bs-target="#exampleModal">
                                     Xoá
                                 </button>
+
                             </div>
                         </td>
                     </tr>
@@ -80,7 +80,36 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="/admin/company/delete" method="get">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">XOÁ CÔNG TY</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input name="id" id="deleteId" hidden>
+                    <span class="text-danger">Xoá công ty  </span><span id="deleteName"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">OK</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!--    JS-->
 <div th:insert="~{template.html::script-js}"></div>
+<script>
+    function infoDelete(id, name) {
+        document.getElementById("deleteName").innerText = name;
+        document.getElementById("deleteId").value = id;
+    }
+</script>
 </body>
 </html>

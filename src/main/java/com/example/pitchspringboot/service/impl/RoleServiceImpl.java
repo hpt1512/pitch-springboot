@@ -34,7 +34,7 @@ public class RoleServiceImpl implements IBaseService<Role> {
 
     @Override
     public Role findById(int id) {
-        return null;
+        return roleRepository.findById(id).orElse(null);
     }
 
     @Override

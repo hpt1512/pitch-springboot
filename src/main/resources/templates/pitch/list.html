@@ -25,10 +25,15 @@
                                 <span>)</span>
                             </span>
 
-                    <span class="d-block mb-5 text-success fw-bold">
+                    <span class="d-block my-3 text-success fw-bold">
                                 <i class="bi bi-telephone-fill me-2"></i>
                                 <span th:text="*{phoneNumber}"></span>
                             </span>
+                    <a target="_blank" th:href="@{${company.mapUrl}}">
+                        <div class="float-end d-flex align-items-center mt-3 me-3 p-3">
+                            <img style="height: 38px" src="/public/img/logo/map2.png">
+                        </div>
+                    </a>
                 </div>
             </div>
 

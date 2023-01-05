@@ -1,6 +1,7 @@
 package com.example.pitchspringboot.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity(name = "user")
 public class User {
@@ -9,14 +10,17 @@ public class User {
     @Column(name = "id")
     private Integer id;
     @Column(name = "username", nullable = false, columnDefinition = "varchar(15)")
+    @NotBlank(message = "{notempty}")
     private String username;
     @Column(name = "`password`", nullable = false, columnDefinition = "varchar(45)")
     private String password;
     @Column(name = "full_name", nullable = false, columnDefinition = "varchar(100)")
+    @NotBlank(message = "{notempty}")
     private String fullName;
     @Column(name = "image", columnDefinition = "varchar(45)")
     private String image;
     @Column(name = "phone_number", nullable = false, columnDefinition = "varchar(12)")
+    @NotBlank(message = "{notempty}")
     private String phoneNumber;
     @Column(name = "email", columnDefinition = "varchar(100)")
     private String email;

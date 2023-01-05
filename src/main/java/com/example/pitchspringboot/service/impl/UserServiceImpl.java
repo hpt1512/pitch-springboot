@@ -39,6 +39,14 @@ public class UserServiceImpl implements IBaseService<User> {
 
     @Override
     public List<User> findByName(String name) {
-        return null;
+        return userRepository.findUserByFullNameContaining(name);
+    }
+
+    public List<User> findByUsername(String username) {
+        return userRepository.findUserByUsername(username);
+    }
+
+    public void changePassword(String newPassword, Integer id) {
+        userRepository.changePassword(newPassword, id);
     }
 }
