@@ -53,6 +53,18 @@ public class CompanyController {
         model.addAttribute("locationList", locationList);
         model.addAttribute("pitchList", pitchList);
         model.addAttribute("userList", userList);
+
+        List<Company> companyAroundList = companyService.findByLocation(company.getLocation());
+        companyAroundList.remove(company);
+
+        if (companyAroundList.size() > 0) {
+            Company companyAroundActive = companyAroundList.get(0);
+            model.addAttribute("companyAroundActive", companyAroundActive);
+            companyAroundList.remove(companyAroundActive);
+        }
+
+        model.addAttribute("companyAroundList", companyAroundList);
+
         return "pitch/list";
     }
     @GetMapping("/findByName")

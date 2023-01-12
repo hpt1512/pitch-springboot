@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>ADMIN - USER</title>
+    <title>ADMIN - ACTIVATE ACCOUNT</title>
     <!--    Link-->
     <div th:insert="~{template.html::link}"></div>
 </head>
@@ -17,11 +17,8 @@
             <div th:insert="~{template.html::menu_left}"></div>
         </div>
         <div class="col-10">
-            <h4 class="text-danger">DANH SÁCH NGƯỜI DÙNG</h4>
-            <div class="btn-group my-3 d-flex justify-content-between" role="group" aria-label="Basic mixed styles example">
-                <a href="/admin/user/create">
-                    <button type="button" class="btn btn-success"><i class="bi bi-plus-circle me-2"></i>Thêm mới</button>
-                </a>
+            <h4 class="text-danger">YÊU CẦU KÍCH HOẠT TÀI KHOẢN</h4>
+            <div class="btn-group my-3 d-flex justify-content-end" role="group" aria-label="Basic mixed styles example">
                 <form class="d-flex" method="get" th:action="@{/admin/user/find}">
                     <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="input_find">
                     <button class="btn btn-success w-50" type="submit">Tìm kiếm</button>
@@ -45,36 +42,36 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr class="align-middle" th:each="user, iter: ${userList}" th:object="${user}"  th:if="${user.status == 1}">
-                        <th scope="row" th:text="${iter.count}"></th>
-                        <td hidden th:text="*{id}"></td>
-                        <td th:text="*{username}"></td>
-                        <td hidden th:text="*{password}"></td>
+                <tr class="align-middle" th:each="user, iter: ${userList}" th:object="${user}"  th:if="${user.status == 0}">
+                    <th scope="row" th:text="${iter.count}"></th>
+                    <td hidden th:text="*{id}"></td>
+                    <td th:text="*{username}"></td>
+                    <td hidden th:text="*{password}"></td>
 
-                        <td class="text-danger fw-bold" th:if="${user.role.id == 1}" th:text="*{role.name}"></td>
-                        <td class="text-success fw-bold" th:if="${user.role.id == 2}" th:text="*{role.name}"></td>
+                    <td class="text-danger fw-bold" th:if="${user.role.id == 1}" th:text="*{role.name}"></td>
+                    <td class="text-success fw-bold" th:if="${user.role.id == 2}" th:text="*{role.name}"></td>
 
-                        <td th:text="*{fullName}"></td>
-                        <td><img style="width: 65px; height: 65px;" th:src="@{'/public/img/user/' + *{image}}" alt=""/></td>
-                        <td th:text="*{phoneNumber}"></td>
-                        <td th:text="*{email}"></td>
-                        <td th:text="*{address}"></td>
-                        <td th:text="*{point}"></td>
+                    <td th:text="*{fullName}"></td>
+                    <td><img style="width: 65px; height: 65px;" th:src="@{'/public/img/user/' + *{image}}" alt=""/></td>
+                    <td th:text="*{phoneNumber}"></td>
+                    <td th:text="*{email}"></td>
+                    <td th:text="*{address}"></td>
+                    <td th:text="*{point}"></td>
 
-                        <td th:if="*{status == 1}" class="text-info fw-bold">Đã kích hoạt</td>
+                    <td th:if="*{status == 0}" class="text-info fw-bold">Chờ kích hoạt</td>
 
-                        <td class="px-4">
-                            <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                <a th:href="@{/admin/user/edit/{id}(id=${user.id})}"><button type="button" class="btn btn-sm btn-warning mx-1">Sửa</button></a>
-                                <button type="button" th:onclick="infoDelete([[${user.id}]],[[${user.fullName}]])"
-                                        class="btn btn-sm btn-danger mx-1" data-bs-toggle="modal"
-                                        data-bs-target="#exampleModal">
-                                    Xoá
-                                </button>
-                            </div>
-                        </td>
+                    <td class="px-4">
+                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <a th:href="@{/admin/activateAccount/{id}(id=${user.id})}"><button type="button" class="btn btn-sm btn-warning mx-1">Kích hoạt</button></a>
+                            <button type="button" th:onclick="infoDelete([[${user.id}]],[[${user.fullName}]])"
+                                    class="btn btn-sm btn-danger mx-1" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                Xoá
+                            </button>
+                        </div>
+                    </td>
 
-                    </tr>
+                </tr>
                 </tbody>
             </table>
             <nav aria-label="Page navigation example">

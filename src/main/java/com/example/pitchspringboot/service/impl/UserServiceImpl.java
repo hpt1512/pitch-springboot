@@ -49,4 +49,10 @@ public class UserServiceImpl implements IBaseService<User> {
     public void changePassword(String newPassword, Integer id) {
         userRepository.changePassword(newPassword, id);
     }
+    public void activateAccount(Integer id) {
+        userRepository.activateAccount(id);
+    }
+    public void raisePoint(Integer id) {
+        userRepository.raisePoint(id);
+    }
 }

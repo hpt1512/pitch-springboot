@@ -26,13 +26,22 @@
                 <div>
                     <h4 class="text-danger">DANH SÁCH ĐƠN ĐẶT SÂN</h4>
                 </div>
-                <form class="d-flex" method="post" action="/admin-company?action=find">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="input_find">
+                <form class="d-flex" method="get" th:action="@{/owner/booking/find}">
+                    <select class="form-select me-2" aria-label="Default select example" name="pitchName">
+                        <option value="">----- Chọn sân -----</option>
+                        <option th:each="pitch : ${pitchList}" th:value="${pitch.id}" th:text="${pitch.name}"></option>
+                    </select>
+                    <input type="date" class="form-control me-2" name="datePlay">
+                    <select class="form-select me-2" aria-label="Default select example" name="timePlay">
+                        <option value="">----- Chọn giờ -----</option>
+                        <option th:each="time : ${timeList}" th:value="${time}" th:text="${time}"></option>
+                    </select>
                     <button class="btn btn-success w-50" type="submit">Tìm kiếm</button>
                 </form>
             </div>
             <span style="color: blue" class="fw-bold" th:if="${messConfirm!=null}" th:text="${messConfirm}"></span>
             <span style="color: red" class="fw-bold" th:if="${messDecline!=null}" th:text="${messDecline}"></span>
+            <span style="color: green" class="fw-bold" th:if="${messConfirmPay!=null}" th:text="${messConfirmPay}"></span>
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -72,17 +81,17 @@
                     <td class="text-secondary fw-bold" th:if="*{status == 0}">Đang chờ</td>
                     <td style="color: blue" class="fw-bold" th:if="*{status == 1}">Đã xác nhận</td>
                     <td style="color: red" class="fw-bold" th:if="*{status == 2}">Đã từ chối</td>
+                    <td style="color: green" class="fw-bold" th:if="*{status == 3}">Đã thanh toán</td>
 
 
                     <td class="px-4">
                         <div th:if="*{status == 0}" class="btn-group" role="group" aria-label="Basic mixed styles example">
                             <a th:href="@{/owner/confirmBooking/{id}(id=${booking.id})}"><button type="button" class="btn btn-sm btn-primary mx-1">Xác nhận</button></a>
                             <a th:href="@{/owner/declineBooking/{id}(id=${booking.id})}"><button type="button" class="btn btn-sm btn-warning mx-1">Từ chối</button></a>
-
                         </div>
-<!--                        <div th:if="*{status != 0}" class="btn-group" role="group" aria-label="Basic mixed styles example">-->
-<!--                            <a th:href="@{/owner/booking/delete/{id}(id=${booking.id})}"><button type="button" class="btn btn-sm btn-danger mx-1">Xoá</button></a>-->
-<!--                        </div>-->
+                        <div th:if="*{status == 1}" class="btn-group" role="group" aria-label="Basic mixed styles example">
+                            <a th:href="@{/owner/confirmPay/{id}(id=${booking.id})}"><button type="button" class="btn btn-sm btn-success mx-1">Xác nhận thanh toán</button></a>
+                        </div>
                     </td>
                 </tr>
                 </tbody>

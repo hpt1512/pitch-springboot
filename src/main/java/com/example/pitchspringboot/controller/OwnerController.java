@@ -8,6 +8,7 @@ import com.example.pitchspringboot.repositoty.IBookingRepository;
 import com.example.pitchspringboot.service.IBaseService;
 import com.example.pitchspringboot.service.impl.BookingServiceImpl;
 import com.example.pitchspringboot.service.impl.PitchServiceImpl;
+import com.example.pitchspringboot.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -25,6 +27,8 @@ public class OwnerController {
     BookingServiceImpl bookingService;
     @Autowired
     IBaseService<Company> companyService;
+    @Autowired
+    UserServiceImpl userService;
     @Autowired
     HttpSession session;
     @Autowired
@@ -86,6 +90,9 @@ public class OwnerController {
         }
 
         model.addAttribute("bookingList", bookingList);
+        List<String> timeList = Arrays.asList("15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
+        model.addAttribute("timeList", timeList);
+        model.addAttribute("pitchList", pitchService.findByCompany(company));
         return "owner/booking/list";
     }
 
@@ -103,11 +110,36 @@ public class OwnerController {
         return "redirect:/owner/booking";
     }
 
+    @GetMapping("/confirmPay/{id}")
+    public String confirmPay(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+        bookingService.confirmPay(id);
+        Booking booking = bookingService.findById(id);
+        userService.raisePoint(booking.getUser().getId());
+        redirectAttributes.addFlashAttribute("messConfirmPay", "Đã xác nhận thanh toán đơn đặt sân");
+        return "redirect:/owner/booking";
+    }
+
     @GetMapping("/booking/delete/{id}")
     public String deleteBooking(Model model, @PathVariable("id") Integer id) {
         Booking booking = bookingService.findById(id);
         bookingService.delete(booking);
         return "redirect:/owner/booking";
+    }
+
+    @GetMapping("/booking/find")
+    public String findBooking(@RequestParam("pitchName") String pitchFindId,
+                              @RequestParam("datePlay") String datePlay,
+                              @RequestParam("timePlay") String timePlay,
+                              Model model) {
+        if ("".equals(pitchFindId) && "".equals(datePlay) && "".equals(timePlay)) {
+            return "redirect:/owner/booking";
+        }
+        List<Booking> bookingList = bookingService.findByPitchDateTimeCustoms(pitchFindId, datePlay, timePlay);
+        model.addAttribute("bookingList", bookingList);
+        List<String> timeList = Arrays.asList("15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
+        model.addAttribute("timeList", timeList);
+        model.addAttribute("pitchList", pitchService.findByCompany(getMyCompany()));
+        return "owner/booking/list";
     }
 
     @PostMapping("/myCompany/create")

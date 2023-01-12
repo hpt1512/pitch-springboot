@@ -2,6 +2,9 @@ package com.example.pitchspringboot.controller;
 
 import com.example.pitchspringboot.model.*;
 import com.example.pitchspringboot.service.IBaseService;
+import com.example.pitchspringboot.service.impl.BookingServiceImpl;
+import com.example.pitchspringboot.service.impl.PitchServiceImpl;
+import com.example.pitchspringboot.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,21 +12,24 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
     @Autowired
-    IBaseService<User> userService;
+    UserServiceImpl userService;
     @Autowired
     IBaseService<Company> companyService;
     @Autowired
-    IBaseService<Booking> bookingService;
+    BookingServiceImpl bookingService;
     @Autowired
     IBaseService<Role> roleService;
     @Autowired
     IBaseService<Location> locationService;
+    @Autowired
+    PitchServiceImpl pitchService;
     @Autowired
     HttpSession session;
     @GetMapping("/user")
@@ -49,8 +55,10 @@ public class AdminController {
     public String createUserPage(Model model) {
         User userSession = (User) session.getAttribute("user");
         model.addAttribute("user", userSession);
-
-        model.addAttribute("newUser", new User());
+        User user = new User();
+        user.setPoint(0);
+        user.setStatus(1);
+        model.addAttribute("newUser", user);
         model.addAttribute("roleList", roleService.findAll());
         return "admin/user/create";
     }
@@ -85,7 +93,12 @@ public class AdminController {
         User user = userService.findById(id);
         userService.delete(user);
         redirectAttributes.addFlashAttribute("mess", "Xoá người dùng thành công");
-        return "redirect:/admin/user";
+
+        if (user.getStatus() == 1) {
+            return "redirect:/admin/user";
+        } else {
+            return "redirect:/admin/activateAccount";
+        }
     }
 
     @GetMapping("/user/find")
@@ -98,6 +111,21 @@ public class AdminController {
         List<User> userList = userService.findByName(input_find);
         model.addAttribute("userList", userList);
         return "admin/user/list";
+    }
+
+    @GetMapping("/activateAccount")
+    public String activateAccount(Model model) {
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
+        model.addAttribute("userList", userService.findAll());
+        return "admin/user/list-activate";
+    }
+
+    @GetMapping("/activateAccount/{id}")
+    public String activateAccount(@PathVariable("id") Integer id, RedirectAttributes redirectAttributes) {
+        userService.activateAccount(id);
+        redirectAttributes.addFlashAttribute("mess", "Đã kích hoạt tài khoản");
+        return "redirect:/admin/activateAccount";
     }
 
     @GetMapping("/company")
@@ -158,6 +186,11 @@ public class AdminController {
         User userSession = (User) session.getAttribute("user");
         model.addAttribute("user", userSession);
         model.addAttribute("bookingList", bookingService.findAll());
+        model.addAttribute("companyList", companyService.findAll());
+        List<String> timeList = Arrays.asList("15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
+        model.addAttribute("timeList", timeList);
+        model.addAttribute("pitchList", pitchService.findAll());
+
         return "admin/booking/list";
     }
 
@@ -167,5 +200,31 @@ public class AdminController {
         bookingService.delete(booking);
         redirectAttributes.addFlashAttribute("mess", "Xoá đơn đặt sân thành công");
         return "redirect:/admin/booking";
+    }
+
+    @GetMapping("/booking/find")
+    public String findBooking(@RequestParam("pitchName") String pitchFindId,
+                              @RequestParam("datePlay") String datePlay,
+                              @RequestParam("timePlay") String timePlay,
+                              Model model) {
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
+        if ("".equals(pitchFindId) && "".equals(datePlay) && "".equals(timePlay)) {
+            return "redirect:/admin/booking";
+        }
+        List<Booking> bookingList = bookingService.findByPitchDateTimeCustoms(pitchFindId, datePlay, timePlay);
+        model.addAttribute("bookingList", bookingList);
+        List<String> timeList = Arrays.asList("15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
+        model.addAttribute("timeList", timeList);
+        model.addAttribute("pitchList", pitchService.findAll());
+        return "admin/booking/list";
+    }
+
+    // ------------ THỐNG KÊ ------------
+    @GetMapping("/report")
+    public String companyReport(Model model) {
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
+        return "admin/report/company-report";
     }
 }

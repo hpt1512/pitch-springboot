@@ -45,12 +45,12 @@
                                 <i class="bi bi-list-ul text-success fw-bold fs-5"></i>
                                 <ul class="list-group header__option__list" id="header__option__list">
                                     <a class="text-decoration-none" href="/user/info"><li class="list-group-item bg-success">Thông tin cá nhân</li></a>
-                                    <a class="text-decoration-none" href="/owner/myCompany"><li class="list-group-item bg-success">Sân bóng của tôi</li></a>
-                                    <a class="text-decoration-none" href="/user/myBooking"><li class="list-group-item bg-success">Đơn đặt sân</li></a>
+                                    <a class="text-decoration-none" href="/owner/myCompany" th:if="${user != null && user.role.id != 1}"><li class="list-group-item bg-success">Sân bóng của tôi</li></a>
+                                    <a class="text-decoration-none" href="/user/myBooking" th:if="${user != null && user.role.id != 1}"><li class="list-group-item bg-success">Đơn đặt sân</li></a>
                                     <a class="text-decoration-none" href="/admin/user" th:if="${user != null && user.role.id == 1}"><li class="list-group-item bg-success">Quản lý</li></a>
+                                    <a class="text-decoration-none" href="/admin/report" th:if="${user != null && user.role.id == 1}"><li class="list-group-item bg-success">Thống kê</li></a>
                                 </ul>
                             </div>
-
                         </li>
                     </ul>
                 </div>
@@ -95,6 +95,7 @@
     <div th:fragment="menu_left">
         <ul class="list-group admin__menu__left">
             <a class="text-decoration-none" href="/admin/user"><li class="list-group-item bg-success text-white fw-bold py-3">QUẢN LÝ NGƯỜI DÙNG</li></a>
+            <a class="text-decoration-none" href="/admin/activateAccount"><li class="list-group-item bg-success text-white fw-bold py-3">KÍCH HOẠT TÀI KHOẢN</li></a>
             <a class="text-decoration-none" href="/admin/company"><li class="list-group-item bg-success text-white fw-bold py-3">QUẢN LÝ CÔNG TY</li></a>
             <a class="text-decoration-none" href="/admin/booking"><li class="list-group-item bg-success text-white fw-bold py-3">QUẢN LÝ ĐẶT SÂN</li></a>
         </ul>

@@ -14,7 +14,8 @@
     <div class="content row my-3 mx-lg-5">
         <div class="col-9">
             <div class="py-2 my-2 bg-light d-flex" th:object="${company}">
-                <img class="p-2" th:src="@{'/public/img/company/' + *{image}}" alt="" style="border-radius: 20px; width: 280px; height: 220px">
+                <img class="p-2" th:src="@{'/public/img/company/' + *{image}}" alt=""
+                     style="border-radius: 20px; width: 280px; height: 220px">
                 <div class="ms-3 w-100">
                     <span class="d-block my-3 text-danger fw-bold fs-5" th:text="*{name}"></span>
                     <span class="d-block  my-3 text-secondary" style="font-weight: 500">
@@ -44,7 +45,6 @@
                     <th scope="col">Sân</th>
                     <th scope="col">Số người</th>
                     <th scope="col">Giá</th>
-                    <th scope="col">Trạng thái</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -55,7 +55,7 @@
                         <td th:text="*{name}"></td>
                         <td th:text="*{peopleMax}"></td>
                         <td th:text="*{price}"></td>
-                        <td th:text="*{status}"></td>
+                        <td hidden th:text="*{status}"></td>
 
                         <td class="px-4">
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
@@ -70,7 +70,70 @@
             </table>
         </div>
         <div class="col-3">
+            <span class="py-3 d-block text-success fw-bold">
+                <i class="bi bi-geo-alt-fill me-1"></i>
+                Sân bóng cùng địa bàn
+            </span>
+            <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active" th:object="${companyAroundActive}">
+                        <a class="text-decoration-none" th:if="${companyAroundActive != null}" th:href="@{/company/{id}/pitch(id = *{id})}">
+                            <div class="py-2 my-2 bg-light">
+                                <img class="p-2" th:src="@{'/public/img/company/' + *{image}}" alt=""
+                                     style="border-radius: 20px; width: 100%; height: 220px">
+                                <div class="ms-3 w-100">
+                                    <span class="d-block my-3 text-danger fw-bold fs-5" th:text="*{name}"></span>
+                                    <span class="d-block  my-3 text-secondary" style="font-weight: 500; width: 95%">
+                                    <i class="bi bi-geo-alt-fill me-2"></i>
+                                    <span th:text="${company.location.name}"></span>
+                                    <span>(</span>
+                                    <span th:text="*{address}"></span>
+                                    <span>)</span>
+                                </span>
+                                    <span class="d-block my-3 text-success fw-bold">
+                                    <i class="bi bi-telephone-fill me-2"></i>
+                                    <span th:text="*{phoneNumber}"></span>
+                                </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="carousel-item" th:each="companyAround : ${companyAroundList}"
+                         th:object="${companyAround}">
+                        <a class="text-decoration-none" th:if="${companyAround != null}" th:href="@{/company/{id}/pitch(id = *{id})}">
+                            <div class="py-2 my-2 bg-light">
+                                <img class="p-2" th:src="@{'/public/img/company/' + *{image}}" alt=""
+                                     style="border-radius: 20px; width: 100%; height: 220px">
+                                <div class="ms-3 w-100">
+                                    <span class="d-block my-3 text-danger fw-bold fs-5" th:text="*{name}"></span>
+                                    <span class="d-block  my-3 text-secondary" style="font-weight: 500; width: 95%">
+                                    <i class="bi bi-geo-alt-fill me-2"></i>
+                                    <span th:text="${company.location.name}"></span>
+                                    <span>(</span>
+                                    <span th:text="*{address}"></span>
+                                    <span>)</span>
+                                </span>
+                                    <span class="d-block my-3 text-success fw-bold">
+                                    <i class="bi bi-telephone-fill me-2"></i>
+                                    <span th:text="*{phoneNumber}"></span>
+                                </span>
 
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+                        data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
         </div>
     </div>
 </div>

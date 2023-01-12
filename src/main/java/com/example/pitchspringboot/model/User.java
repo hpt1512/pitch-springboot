@@ -28,6 +28,8 @@ public class User {
     private String address;
     @Column(name = "`point`", columnDefinition = "int default 0")
     private Integer point;
+    @Column(name = "`status`", columnDefinition = "int default 0")
+    private Integer status;
     @ManyToOne
     @JoinColumn(name = "id_role", nullable = false)
     private Role role;
@@ -35,7 +37,7 @@ public class User {
     public User() {
     }
 
-    public User(Integer id, String username, String password, String fullName, String image, String phoneNumber, String email, String address, Integer point, Role role) {
+    public User(Integer id, String username, String password, String fullName, String image, String phoneNumber, String email, String address, Integer point, Integer status, Role role) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -45,6 +47,7 @@ public class User {
         this.email = email;
         this.address = address;
         this.point = point;
+        this.status = status;
         this.role = role;
     }
 
@@ -118,6 +121,14 @@ public class User {
 
     public void setPoint(Integer point) {
         this.point = point;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Role getRole() {

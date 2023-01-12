@@ -16,6 +16,8 @@ import java.util.List;
 public interface IBookingRepository extends JpaRepository<Booking, Integer> {
     List<Booking> findBookingByUser(User user);
     List<Booking> findBookingByPitchAndDateAndTime(Pitch pitch, Date date, String time);
+    @Query(value="select * from booking where id_pitch like concat(\"%\" , ? , \"%\") and date like concat(\"%\" , ? , \"%\") and time like concat(\"%\" , ? , \"%\");", nativeQuery=true)
+    List<Booking> findByPitchDateTimeCustoms(String pitchFindId, String datefind, String timeFind);
     @Modifying
     @Transactional
     @Query(value="update booking set status = 1 where id = ?;", nativeQuery=true)
@@ -24,4 +26,9 @@ public interface IBookingRepository extends JpaRepository<Booking, Integer> {
     @Transactional
     @Query(value="update booking set status = 2 where id = ?;", nativeQuery=true)
     void declineBooking(Integer idBooking);
+    @Modifying
+    @Transactional
+    @Query(value="update booking set status = 3 where id = ?;", nativeQuery=true)
+    void confirmPay(Integer idBooking);
+    List<Booking> findBookingByUserAndStatus(User user, Integer status);
 }

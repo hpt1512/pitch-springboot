@@ -2,6 +2,7 @@ package com.example.pitchspringboot.controller;
 
 import com.example.pitchspringboot.model.*;
 import com.example.pitchspringboot.service.IBaseService;
+import com.example.pitchspringboot.service.impl.BookingServiceImpl;
 import com.example.pitchspringboot.validate.BookingValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,7 @@ public class BookingController {
     @Autowired
     IBaseService<Pitch> pitchService;
     @Autowired
-    IBaseService<Booking> bookingService;
+    BookingServiceImpl bookingService;
     @Autowired
     IBaseService<Voucher> voucherService;
     @Autowired
@@ -58,8 +59,17 @@ public class BookingController {
 
         //đặt voucher mặc định - Lấy user đã update point từ database
         Voucher voucher = new Voucher();
+
+
+
+
         if (user.getPoint() % 5 == 0 && user.getPoint() != 0) {
-            voucher = voucherService.findById(2);
+            if (bookingService.findByUserAndStatus(user, 1).size() == 0 && bookingService.findByUserAndStatus(user, 2).size() == 0
+                    && bookingService.findByUserAndStatus(user, 0).size() == 0) {
+                voucher = voucherService.findById(2);
+            } else {
+                voucher = voucherService.findById(1);
+            }
         } else {
             voucher = voucherService.findById(1);
         }

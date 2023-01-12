@@ -18,15 +18,28 @@
         </div>
         <div class="col-10">
             <h4 class="text-danger">DANH SÁCH ĐƠN ĐẶT SÂN</h4>
-            <div class="btn-group my-3 d-flex justify-content-between" role="group" aria-label="Basic mixed styles example">
-                <a href="/admin-company?action=create">
+            <div class="btn-group my-3 d-flex justify-content-end" role="group" aria-label="Basic mixed styles example">
+                <a hidden href="/admin-company?action=create">
                     <button type="button" class="btn btn-success"><i class="bi bi-plus-circle me-2"></i>Thêm mới</button>
                 </a>
-                <form class="d-flex" method="post" action="/admin-company?action=find">
-                    <input class="form-control me-2" type="search" placeholder="Công ty" aria-label="Search" name="input_find">
-                    <input class="form-control me-2" type="search" placeholder="Sân" aria-label="Search" name="input_find">
-                    <input class="form-control me-2" type="search" placeholder="Ngày" aria-label="Search" name="input_find">
-                    <input class="form-control me-2" type="search" placeholder="Giờ" aria-label="Search" name="input_find">
+
+<!--                <form class="d-flex" method="get" th:action="@{/admin/booking/find1}">-->
+<!--                    <select class="form-select me-2" aria-label="Default select example" name="companyName" onchange="this.form.submit()">-->
+<!--                        <option>-&#45;&#45;&#45;&#45; Chọn công ty -&#45;&#45;&#45;&#45;</option>-->
+<!--                        <option th:each="company : ${companyList}" th:value="${company.id}" th:text="${company.name}"></option>-->
+<!--                    </select>-->
+<!--                </form>-->
+
+                <form class="d-flex" method="get" th:action="@{/admin/booking/find}">
+                    <select class="form-select me-2" aria-label="Default select example" name="pitchName">
+                        <option value="">----- Chọn sân -----</option>
+                        <option th:each="pitch : ${pitchList}" th:value="${pitch.id}" th:text="${pitch.name}"></option>
+                    </select>
+                    <input type="date" class="form-control me-2" name="datePlay">
+                    <select class="form-select me-2" aria-label="Default select example" name="timePlay">
+                        <option value="">----- Chọn giờ -----</option>
+                        <option th:each="time : ${timeList}" th:value="${time}" th:text="${time}"></option>
+                    </select>
                     <button class="btn btn-success w-50" type="submit">Tìm kiếm</button>
                 </form>
             </div>
@@ -70,6 +83,7 @@
                     <td class="text-secondary fw-bold" th:if="*{status == 0}">Đang chờ</td>
                     <td style="color: blue" class="fw-bold" th:if="*{status == 1}">Đã xác nhận</td>
                     <td style="color: red" class="fw-bold" th:if="*{status == 2}">Đã từ chối</td>
+                    <td style="color: green" class="fw-bold" th:if="*{status == 3}">Đã thanh toán</td>
 
                     <td class="px-4">
                         <div class="btn-group" role="group" aria-label="Basic mixed styles example">

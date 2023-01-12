@@ -72,13 +72,14 @@
                     <td class="text-secondary fw-bold" th:if="*{status == 0}">Đang chờ</td>
                     <td style="color: blue" class="fw-bold" th:if="*{status == 1}">Đã xác nhận</td>
                     <td style="color: red" class="fw-bold" th:if="*{status == 2}">Đã từ chối</td>
+                    <td style="color: green" class="fw-bold" th:if="*{status == 3}">Đã thanh toán</td>
 
                     <td th:if="*{status == 0}" class="px-4">
-                        <a><button type="button" class="btn btn-sm btn-warning mx-1">Sửa</button></a>
-                        <a><button type="button" class="btn btn-sm btn-danger mx-1">Xoá</button></a>
-                    </td>
-                    <td th:if="*{status != 0}" class="px-4">
-                        <a><button type="button" class="btn btn-sm btn-danger mx-1">Xoá</button></a>
+                        <button type="button" th:onclick="infoDelete([[${booking.id}]])"
+                                class="btn btn-sm btn-danger mx-1" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">
+                            Huỷ đơn
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -95,7 +96,36 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="/user/booking/delete" method="get">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">HUỶ ĐƠN ĐẶT SÂN</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input name="id" id="deleteId" hidden>
+                    <span class="text-danger">Huỷ đơn đặt sân ID :  </span><span id="deleteName"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">OK</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!--    JS-->
 <div th:insert="~{template.html::script-js}"></div>
+<script>
+    function infoDelete(id) {
+        document.getElementById("deleteName").innerText = id;
+        document.getElementById("deleteId").value = id;
+    }
+</script>
 </body>
 </html>

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -33,10 +34,19 @@ public class UserController {
         return "user/mybooking";
     }
 
+    @GetMapping("/booking/delete")
+    public String deleteBooking(Model model, @RequestParam("id") Integer id, RedirectAttributes redirectAttributes) {
+        Booking booking = bookingService.findById(id);
+        bookingService.delete(booking);
+        redirectAttributes.addFlashAttribute("mess", "Đã huỷ đơn đặt sân");
+        return "redirect:/user/myBooking";
+    }
+
     @GetMapping("/info")
     public String info(Model model) {
         User userSession = (User) session.getAttribute("user");
-        model.addAttribute("user", userSession);
+        User user = userService.findById(userSession.getId());
+        model.addAttribute("user", user);
         return "user/info";
     }
 

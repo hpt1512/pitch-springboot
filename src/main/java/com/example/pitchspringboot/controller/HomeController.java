@@ -52,8 +52,13 @@ public class HomeController {
         for (User user : userList) {
             if (user.getUsername().equals(login.getUsername())
                     && user.getPassword().equals(login.getPassword())) {
-                session.setAttribute("user", user);
-                return "redirect:";
+                if (user.getStatus() == 1) {
+                    session.setAttribute("user", user);
+                    return "redirect:";
+                } else {
+                    model.addAttribute("error", "Tài khoản này chưa được kích hoạt, vui lòng đợi");
+                    return "login";
+                }
             }
         }
         model.addAttribute("error", "Đăng nhập thất bại. Tài khoản hoặc mật khẩu không chính xác");
@@ -75,6 +80,7 @@ public class HomeController {
 
         newUser.setImage(null);
         newUser.setPoint(0);
+        newUser.setStatus(0);
         newUser.setRole(roleService.findById(2));
 
         model.addAttribute("newUser", newUser);
@@ -93,7 +99,7 @@ public class HomeController {
             return "register";
         }
         userService.insert(newUser);
-        redirectAttributes.addFlashAttribute("mess", "Đăng ký thành công, đăng nhập ngay");
+        redirectAttributes.addFlashAttribute("mess", "Đăng ký thành công, vui lòng đợi quản trị viên kích hoạt tài khoản để sử dụng dịch vụ");
         return "redirect:/login";
     }
 }
