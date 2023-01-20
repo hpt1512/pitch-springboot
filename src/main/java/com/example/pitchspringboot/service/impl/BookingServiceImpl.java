@@ -4,6 +4,7 @@ import com.example.pitchspringboot.model.Booking;
 import com.example.pitchspringboot.model.Pitch;
 import com.example.pitchspringboot.model.User;
 import com.example.pitchspringboot.repositoty.IBookingRepository;
+import com.example.pitchspringboot.repositoty.IReportIncomeByMonth;
 import com.example.pitchspringboot.service.IBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,5 +65,8 @@ public class BookingServiceImpl implements IBaseService<Booking> {
     }
     public List<Booking> findByUserAndStatus(User user, Integer status) {
         return bookingRepository.findBookingByUserAndStatus(user, status);
+    }
+    public List<IReportIncomeByMonth> reportIncomeByMonth(Integer id) {
+        return bookingRepository.reportIncomeByMonth(id);
     }
 }

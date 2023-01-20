@@ -55,4 +55,16 @@ public class UserServiceImpl implements IBaseService<User> {
     public void raisePoint(Integer id) {
         userRepository.raisePoint(id);
     }
+    public Integer countAllUser() {
+        return userRepository.countAllUser();
+    }
+    public List<User> reportUser() {
+        return userRepository.reportUser();
+    }
+    public void addRoleOwner(Integer id) {
+        userRepository.addRoleOwner(id);
+    }
+    public void removeRoleOwner(Integer id) {
+        userRepository.removeRoleOwner(id);
+    }
 }

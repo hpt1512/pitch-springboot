@@ -13,101 +13,100 @@
     <!-- Content -->
     <div class="content row my-3 mx-3">
         <div class="col-2">
-            <!--    Menu-->
-<!--            <div th:insert="~{template.html::menu_left}"></div>-->
+            <!-- Menu -->
+            <div th:insert="~{template.html::menu_report}"></div>
         </div>
         <div class="col-10">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    <th scope="col">STT</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Quyền</th>
-                    <th scope="col">Họ tên</th>
-                    <th scope="col">Hình ảnh</th>
-                    <th scope="col">SĐT</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Địa chỉ</th>
-                    <th scope="col">Điểm tích luỹ</th>
-                    <th scope="col">Trạng thái</th>
-                    <th scope="col"></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="align-middle" th:each="user, iter: ${userList}" th:object="${user}"  th:if="${user.status == 1}">
-                    <th scope="row" th:text="${iter.count}"></th>
-                    <td hidden th:text="*{id}"></td>
-                    <td th:text="*{username}"></td>
-                    <td hidden th:text="*{password}"></td>
-
-                    <td class="text-danger fw-bold" th:if="${user.role.id == 1}" th:text="*{role.name}"></td>
-                    <td class="text-success fw-bold" th:if="${user.role.id == 2}" th:text="*{role.name}"></td>
-
-                    <td th:text="*{fullName}"></td>
-                    <td><img style="width: 65px; height: 65px;" th:src="@{'/public/img/user/' + *{image}}" alt=""/></td>
-                    <td th:text="*{phoneNumber}"></td>
-                    <td th:text="*{email}"></td>
-                    <td th:text="*{address}"></td>
-                    <td th:text="*{point}"></td>
-
-                    <td th:if="*{status == 1}" class="text-info fw-bold">Đã kích hoạt</td>
-
-                    <td class="px-4">
-                        <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                            <a th:href="@{/admin/user/edit/{id}(id=${user.id})}"><button type="button" class="btn btn-sm btn-warning mx-1">Sửa</button></a>
-                            <button type="button" th:onclick="infoDelete([[${user.id}]],[[${user.fullName}]])"
-                                    class="btn btn-sm btn-danger mx-1" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
-                                Xoá
-                            </button>
-                        </div>
-                    </td>
-
-                </tr>
-                </tbody>
-            </table>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
-        </div>
-    </div>
-</div>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <form action="/admin/user/delete" method="get">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">XOÁ NGƯỜI DÙNG</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <div class="row">
+                <div class="col-6 border border-success shadow-sm bg-info text-center py-3">
+                    <h5 th:text="'Khách hàng: ' + ${countUser}"></h5>
                 </div>
-                <div class="modal-body">
-                    <input name="id" id="deleteId" hidden>
-                    <span class="text-danger">Xoá người dùng  </span><span id="deleteName"></span>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">OK</button>
+                <div class="col-6 border border-success shadow-sm bg-danger text-center py-3">
+                    <h5 th:text="'Công ty: ' + ${countCompany}"></h5>
                 </div>
             </div>
-        </form>
+            <div class="row py-3">
+                <div class="col-8 py-3 d-flex justify-content-center">
+                    <div class="w-50">
+                        <canvas id="myChart"></canvas>
+                    </div>
+
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                    <script>
+                        const companyReport = async () => {
+                            const respone = await fetch('http://localhost:8080/api/admin/report-company');
+                            const myJson = await respone.json();
+                            let charLabel = []
+                            let charInfo = []
+
+                            for (let i = 0; i < myJson.length; i++) {
+                                charLabel.push(myJson[i].name)
+                                charInfo.push(myJson[i].amount)
+                            }
+
+                            const data = {
+                                labels: charLabel,
+                                datasets: [{
+                                    label: 'Số lượng sân bóng',
+                                    data: charInfo,
+                                    backgroundColor: [
+                                        'rgb(255, 99, 132)',
+                                        'rgb(54, 162, 235)',
+                                        'rgb(255, 205, 86)',
+                                        'rgb(174, 33, 190)',
+                                        'rgb(255, 0, 0)',
+                                        'rgb(60, 153, 29)'
+                                    ],
+                                    hoverOffset: 4
+                                }]
+                            };
+
+                            console.log(data)
+
+                            const config = {
+                                type: 'doughnut',
+                                data: data,
+                            };
+                            let ctx = document.getElementById("myChart").getContext("2d")
+                            new Chart(ctx, config)
+                        }
+                        companyReport()
+
+
+                    </script>
+
+
+                </div>
+                <div class="col-4">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col">Quận/Huyện</th>
+                            <th scope="col">Số lượng sân bóng</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="align-middle" th:each="reportCompany, iter: ${reportCompanyList}">
+                            <th scope="row" th:text="${iter.count}"></th>
+                            <td th:text="${reportCompany.getName()}"></td>
+                            <td th:text="${reportCompany.getAmount()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+
+            </div>
+        </div>
+
     </div>
 </div>
 
 <!--    JS-->
 <div th:insert="~{template.html::script-js}"></div>
-<script>
-    function infoDelete(id, name) {
-        document.getElementById("deleteName").innerText = name;
-        document.getElementById("deleteId").value = id;
-    }
-</script>
+
 </body>
 </html>

@@ -15,6 +15,10 @@
         <div class="col-2">
             <!--    Menu-->
             <div>
+                <div class="d-flex">
+                    <h4 class="text-white pt-3 px-3">CHỦ SÂN</h4>
+                </div>
+                <hr>
                 <ul class="list-group admin__menu__left">
                     <a class="text-decoration-none" href="/owner/myCompany">
                         <li class="list-group-item bg-success text-white fw-bold py-3">SÂN BÓNG CỦA TÔI</li>
@@ -22,11 +26,13 @@
                     <a class="text-decoration-none" href="/owner/booking">
                         <li class="list-group-item bg-success text-white fw-bold py-3">QUẢN LÝ ĐƠN ĐẶT SÂN</li>
                     </a>
+                    <a class="text-decoration-none" href="/owner/report-income"><li class="list-group-item bg-success text-white fw-bold py-3">THỐNG KÊ DOANH THU</li></a>
                 </ul>
             </div>
         </div>
         <div class="col-10">
             <h4 class="text-danger">SÂN BÓNG CỦA TÔI</h4>
+            <span style="color: blue" th:text="${messInfo}"></span>
             <div class="py-2 my-2 mb-5 bg-light d-flex" th:object="${company}">
                 <img class="p-2" th:src="@{'/public/img/company/' + *{image}}" alt=""
                      style="border-radius: 20px; width: 280px; height: 220px">
@@ -44,6 +50,11 @@
                                 <i class="bi bi-telephone-fill me-2"></i>
                                 <span th:text="*{phoneNumber}"></span>
                             </span>
+                    <a th:href="@{/owner/myCompany/info}">
+                        <button type="button" class="btn btn-success float-end me-3 pe-3">
+                            Cập nhật
+                        </button>
+                    </a>
                 </div>
             </div>
             <div class="btn-group my-3 d-flex justify-content-between" role="group"
@@ -120,15 +131,6 @@
                 </tbody>
             </table>
 
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
         </div>
     </div>
 </div>

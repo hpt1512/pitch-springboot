@@ -44,11 +44,11 @@
                             <div class="nav-link active text-success header__option__btn" id="header__option__btn">
                                 <i class="bi bi-list-ul text-success fw-bold fs-5"></i>
                                 <ul class="list-group header__option__list" id="header__option__list">
-                                    <a class="text-decoration-none" href="/user/info"><li class="list-group-item bg-success">Thông tin cá nhân</li></a>
-                                    <a class="text-decoration-none" href="/owner/myCompany" th:if="${user != null && user.role.id != 1}"><li class="list-group-item bg-success">Sân bóng của tôi</li></a>
-                                    <a class="text-decoration-none" href="/user/myBooking" th:if="${user != null && user.role.id != 1}"><li class="list-group-item bg-success">Đơn đặt sân</li></a>
+                                    <a class="text-decoration-none" href="/user/info" th:if="${user != null}"><li class="list-group-item bg-success">Thông tin cá nhân</li></a>
+                                    <a class="text-decoration-none" href="/owner/myCompany" th:if="${user != null && user.role.id == 3}"><li class="list-group-item bg-success">Sân bóng của tôi</li></a>
+                                    <a class="text-decoration-none" href="/user/myBooking" th:if="${user != null && user.role.id == 2}"><li class="list-group-item bg-success">Đơn đặt sân</li></a>
                                     <a class="text-decoration-none" href="/admin/user" th:if="${user != null && user.role.id == 1}"><li class="list-group-item bg-success">Quản lý</li></a>
-                                    <a class="text-decoration-none" href="/admin/report" th:if="${user != null && user.role.id == 1}"><li class="list-group-item bg-success">Thống kê</li></a>
+                                    <a class="text-decoration-none" href="/admin/report-user" th:if="${user != null && user.role.id == 1}"><li class="list-group-item bg-success">Thống kê</li></a>
                                 </ul>
                             </div>
                         </li>
@@ -93,11 +93,26 @@
         </div>
     </div>
     <div th:fragment="menu_left">
+        <div class="d-flex">
+            <h4 class="text-white pt-3 px-3">QUẢN LÝ</h4>
+        </div>
+        <hr>
         <ul class="list-group admin__menu__left">
             <a class="text-decoration-none" href="/admin/user"><li class="list-group-item bg-success text-white fw-bold py-3">QUẢN LÝ NGƯỜI DÙNG</li></a>
             <a class="text-decoration-none" href="/admin/activateAccount"><li class="list-group-item bg-success text-white fw-bold py-3">KÍCH HOẠT TÀI KHOẢN</li></a>
-            <a class="text-decoration-none" href="/admin/company"><li class="list-group-item bg-success text-white fw-bold py-3">QUẢN LÝ CÔNG TY</li></a>
+            <a class="text-decoration-none" href="/admin/company"><li class="list-group-item bg-success text-white fw-bold py-3">QUẢN LÝ SÂN BÓNG</li></a>
             <a class="text-decoration-none" href="/admin/booking"><li class="list-group-item bg-success text-white fw-bold py-3">QUẢN LÝ ĐẶT SÂN</li></a>
+        </ul>
+    </div>
+    <div th:fragment="menu_report">
+        <div class="d-flex">
+            <h4 class="text-white pt-3 px-3">THỐNG KÊ</h4>
+        </div>
+        <hr>
+        <ul class="list-group admin__menu__left">
+            <a class="text-decoration-none" href="/admin/report-user"><li class="list-group-item bg-success text-white fw-bold py-3">THỐNG KÊ KHÁCH HÀNG</li></a>
+            <a class="text-decoration-none" href="/admin/report-company"><li class="list-group-item bg-success text-white fw-bold py-3">THỐNG KÊ CÔNG TY</li></a>
+<!--            <a class="text-decoration-none" href="/admin/report-income"><li class="list-group-item bg-success text-white fw-bold py-3">THỐNG KÊ DOANH THU</li></a>-->
         </ul>
     </div>
     <div th:fragment="footer">

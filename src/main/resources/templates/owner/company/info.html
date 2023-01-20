@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>ADMIN - EDIT COMPANY</title>
+    <title>OWNER - MY COMPANY - INFO</title>
     <!--    Link-->
     <div th:insert="~{template.html::link}"></div>
 </head>
@@ -14,18 +14,31 @@
     <div class="content row my-3 mx-3">
         <div class="col-2">
             <!--    Menu-->
-            <div th:insert="~{template.html::menu_left}"></div>
+            <div>
+                <div class="d-flex">
+                    <h4 class="text-white pt-3 px-3">CHỦ SÂN</h4>
+                </div>
+                <hr>
+                <ul class="list-group admin__menu__left">
+                    <a class="text-decoration-none" href="/owner/myCompany">
+                        <li class="list-group-item bg-success text-white fw-bold py-3">SÂN BÓNG CỦA TÔI</li>
+                    </a>
+                    <a class="text-decoration-none" href="/owner/booking">
+                        <li class="list-group-item bg-success text-white fw-bold py-3">QUẢN LÝ ĐƠN ĐẶT SÂN</li>
+                    </a>
+                    <a class="text-decoration-none" href="/owner/report-income"><li class="list-group-item bg-success text-white fw-bold py-3">THỐNG KÊ DOANH THU</li></a>
+                </ul>
+            </div>
         </div>
         <div class="col-10">
-            <h4 class="text-danger">CẬP NHẬT SÂN BÓNG</h4>
-
-            <form class="col-8 ms-5 mt-3" th:action="@{/admin/company/doEdit}" method="post" th:object="${currentCompany}">
-                <div hidden class="mb-3">
+            <h4 class="text-danger">THÔNG TIN SÂN BÓNG</h4>
+            <form class="col-8 ms-5 mt-3" th:action="@{/owner/myCompany/editInfo}" method="post" th:object="${company}">
+                <div class="mb-3">
                     <label class="form-label text-success fw-bold">ID</label>
                     <input type="text" class="form-control" th:field="*{id}">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label text-success fw-bold">Tên công ty</label>
+                    <label class="form-label text-success fw-bold">Tên sân</label>
                     <input type="text" class="form-control" th:field="*{name}">
                 </div>
                 <div class="mb-3">
@@ -39,14 +52,14 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Email</label>
-                    <input type="email" class="form-control" th:field="*{email}">
+                    <input type="text" class="form-control" th:field="*{email}">
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Địa chỉ</label>
                     <input type="text" class="form-control" th:field="*{address}">
                 </div>
-                <div hidden class="mb-3">
-                    <label class="form-label text-success fw-bold">MapUrl</label>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Map URL</label>
                     <input type="text" class="form-control" th:field="*{mapUrl}">
                 </div>
                 <div class="mb-3">
@@ -56,21 +69,26 @@
                         <option th:each="location : ${locationList}" th:value="${location.id}" th:text="${location.name}"></option>
                     </select>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label text-success fw-bold">Chủ sở hữu</label>
-                    <select class="form-select" aria-label="Default select example" th:field="*{user}">
-                        <option value="">----- Chọn chủ sở hữu -----</option>
-                        <option th:each="user : ${userList}" th:value="${user.id}" th:text="${'ID: ' + user.id + ' - ' + 'Name: ' + user.fullName}"></option>
-                    </select>
+                <div hidden class="mb-3">
+                    <label class="form-label text-success fw-bold">Chủ sân</label>
+                    <input type="text" class="form-control" th:field="*{user}">
                 </div>
                 <button type="submit" class="btn btn-primary mt-2">Cập nhật</button>
             </form>
-
 
         </div>
     </div>
 </div>
 <!--    JS-->
 <div th:insert="~{template.html::script-js}"></div>
+<script>
+    function showFormCreate() {
+        document.getElementById("formCreatePitch").style.display = "block";
+    }
+
+    function closeFormCreate() {
+        document.getElementById("formCreatePitch").style.display = "none";
+    }
+</script>
 </body>
 </html>

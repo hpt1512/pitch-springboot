@@ -53,6 +53,7 @@
 
                         <td class="text-danger fw-bold" th:if="${user.role.id == 1}" th:text="*{role.name}"></td>
                         <td class="text-success fw-bold" th:if="${user.role.id == 2}" th:text="*{role.name}"></td>
+                        <td class="text-info fw-bold" th:if="${user.role.id == 3}" th:text="*{role.name}"></td>
 
                         <td th:text="*{fullName}"></td>
                         <td><img style="width: 65px; height: 65px;" th:src="@{'/public/img/user/' + *{image}}" alt=""/></td>
@@ -77,15 +78,7 @@
                     </tr>
                 </tbody>
             </table>
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                </ul>
-            </nav>
+
         </div>
     </div>
 </div>

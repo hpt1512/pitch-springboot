@@ -1,8 +1,10 @@
 package com.example.pitchspringboot.controller;
 
 import com.example.pitchspringboot.model.*;
+import com.example.pitchspringboot.repositoty.IRepostCompany;
 import com.example.pitchspringboot.service.IBaseService;
 import com.example.pitchspringboot.service.impl.BookingServiceImpl;
+import com.example.pitchspringboot.service.impl.CompanyServiceImpl;
 import com.example.pitchspringboot.service.impl.PitchServiceImpl;
 import com.example.pitchspringboot.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ public class AdminController {
     @Autowired
     UserServiceImpl userService;
     @Autowired
-    IBaseService<Company> companyService;
+    CompanyServiceImpl companyService;
     @Autowired
     BookingServiceImpl bookingService;
     @Autowired
@@ -90,7 +92,18 @@ public class AdminController {
     public String deleteUser(Model model, @RequestParam("id") Integer id, RedirectAttributes redirectAttributes) {
         User userSession = (User) session.getAttribute("user");
         model.addAttribute("user", userSession);
+
         User user = userService.findById(id);
+        Company company = companyService.findCompanyByUser(user);
+        List<Booking> bookingList = bookingService.findByUser(user);
+        if (company != null) {
+            companyService.delete(company);
+        }
+        if (bookingList.size() != 0) {
+            for (Booking booking : bookingList) {
+                bookingService.delete(booking);
+            }
+        }
         userService.delete(user);
         redirectAttributes.addFlashAttribute("mess", "Xoá người dùng thành công");
 
@@ -150,6 +163,7 @@ public class AdminController {
     @PostMapping("/company/doCreate")
     public String doCreateCompany(@ModelAttribute("newCompany") Company newCompany, RedirectAttributes redirectAttributes) {
         companyService.insert(newCompany);
+        userService.addRoleOwner(newCompany.getUser().getId());
         redirectAttributes.addFlashAttribute("mess", "Thêm mới thành công");
         return "redirect:/admin/company";
     }
@@ -177,6 +191,7 @@ public class AdminController {
         model.addAttribute("user", userSession);
         Company company = companyService.findById(id);
         companyService.delete(company);
+        userService.removeRoleOwner(company.getUser().getId());
         redirectAttributes.addFlashAttribute("mess", "Xoá công ty thành công");
         return "redirect:/admin/company";
     }
@@ -221,10 +236,27 @@ public class AdminController {
     }
 
     // ------------ THỐNG KÊ ------------
-    @GetMapping("/report")
+    @GetMapping("/report-user")
+    public String userReport(Model model) {
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
+        model.addAttribute("countUser", userService.countAllUser());
+        model.addAttribute("countCompany", companyService.countAllCompany());
+        model.addAttribute("reportUserList", userService.reportUser());
+        return "admin/report/user-report";
+    }
+
+    @GetMapping("/report-company")
     public String companyReport(Model model) {
         User userSession = (User) session.getAttribute("user");
         model.addAttribute("user", userSession);
+        model.addAttribute("countUser", userService.countAllUser());
+        model.addAttribute("countCompany", companyService.countAllCompany());
+
+        List<IRepostCompany> reportCompanyList = companyService.getReportCompany();
+        model.addAttribute("reportCompanyList", reportCompanyList);
+
+
         return "admin/report/company-report";
     }
 }

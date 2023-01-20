@@ -1,12 +1,11 @@
 package com.example.pitchspringboot.controller;
 
-import com.example.pitchspringboot.model.Booking;
-import com.example.pitchspringboot.model.Company;
-import com.example.pitchspringboot.model.Pitch;
-import com.example.pitchspringboot.model.User;
+import com.example.pitchspringboot.model.*;
 import com.example.pitchspringboot.repositoty.IBookingRepository;
+import com.example.pitchspringboot.repositoty.IReportIncomeByMonth;
 import com.example.pitchspringboot.service.IBaseService;
 import com.example.pitchspringboot.service.impl.BookingServiceImpl;
+import com.example.pitchspringboot.service.impl.CompanyServiceImpl;
 import com.example.pitchspringboot.service.impl.PitchServiceImpl;
 import com.example.pitchspringboot.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/owner")
@@ -26,33 +23,29 @@ public class OwnerController {
     @Autowired
     BookingServiceImpl bookingService;
     @Autowired
-    IBaseService<Company> companyService;
+    CompanyServiceImpl companyService;
     @Autowired
     UserServiceImpl userService;
     @Autowired
     HttpSession session;
     @Autowired
     PitchServiceImpl pitchService;
+    @Autowired
+    IBaseService<Location> locationService;
 
     public Company getMyCompany() {
         User userSession = (User) session.getAttribute("user");
-        Company company = null;
-        List<Company> companyList = companyService.findAll();
-        for (Company c : companyList) {
-            if (c.getUser().getId() == userSession.getId()) {
-                company = c;
-            }
-        }
-        return company;
+        return companyService.findCompanyByUser(userSession);
     }
 
     @GetMapping("/myCompany")
     public String myCompanyManage(Model model) {
         User userSession = (User) session.getAttribute("user");
         model.addAttribute("user", userSession);
+
         Company company = getMyCompany();
 
-        if (company == null) {
+        if (userSession.getRole().getId() != 3) {
             return "errors/not_owner";
         }
 
@@ -61,13 +54,11 @@ public class OwnerController {
         model.addAttribute("company", company);
         model.addAttribute("pitchList", pitchList);
 
-
         Pitch pitch = new Pitch();
         pitch.setStatus(0);
         pitch.setCompany(company);
 
         model.addAttribute("newPitch", pitch);
-
 
         return "owner/company/list";
     }
@@ -78,7 +69,6 @@ public class OwnerController {
         model.addAttribute("user", userSession);
 
         Company company = getMyCompany();
-
 
         List<Booking> bookingList = new ArrayList<>();
         List<Booking> allBookingList = bookingService.findAll();
@@ -142,6 +132,20 @@ public class OwnerController {
         return "owner/booking/list";
     }
 
+    @GetMapping("/myCompany/info")
+    public String infoMyCompany(Model model) {
+        model.addAttribute("company", getMyCompany());
+        model.addAttribute("locationList", locationService.findAll());
+        return "owner/company/info";
+    }
+
+    @PostMapping("/myCompany/editInfo")
+    public String doEditCompany(@ModelAttribute("company") Company company, RedirectAttributes redirectAttributes) {
+        companyService.update(company);
+        redirectAttributes.addFlashAttribute("messInfo", "Cập nhật thành công");
+        return "redirect:/owner/myCompany";
+    }
+
     @PostMapping("/myCompany/create")
     public String doCreatePitch(@ModelAttribute("newPitch") Pitch newPitch, RedirectAttributes redirectAttributes) {
         pitchService.insert(newPitch);
@@ -172,5 +176,27 @@ public class OwnerController {
         pitchService.delete(pitch);
         redirectAttributes.addFlashAttribute("mess", "Xoá sân bóng thành công");
         return "redirect:/owner/myCompany";
+    }
+
+    @GetMapping("/report-income")
+    public String reportIncoome(Model model) {
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
+        Company company = getMyCompany();
+        List<IReportIncomeByMonth> reportIncomeList = bookingService.reportIncomeByMonth(company.getId());
+        model.addAttribute("reportIncomeList", reportIncomeList);
+
+        Date date = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        Integer currentMonth = c.MONTH - 1;
+        Integer currentMonthIncome = 0;
+        for (IReportIncomeByMonth ob:reportIncomeList) {
+            if (ob.getMonth() == currentMonth) {
+                currentMonthIncome = ob.getSum();
+            }
+        }
+        model.addAttribute("currentMonthIncome", currentMonthIncome);
+        return "owner/report-income/report-income";
     }
 }

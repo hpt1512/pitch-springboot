@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ADMIN - USER REPORT</title>
+    <!--    Link-->
+    <div th:insert="~{template.html::link}"></div>
+</head>
+<body>
+<div class="app">
+    <!--    Header-->
+    <div th:insert="~{template.html::header}"></div>
+    <!-- Content -->
+    <div class="content row my-3 mx-3">
+        <div class="col-2">
+            <!-- Menu -->
+            <div th:insert="~{template.html::menu_report}"></div>
+        </div>
+        <div class="col-10">
+            <div class="row">
+                <div class="col-6 border border-success shadow-sm bg-info text-center py-3">
+                    <h5 th:text="'Khách hàng: ' + ${countUser}"></h5>
+                </div>
+                <div class="col-6 border border-success shadow-sm bg-danger text-center py-3">
+                    <h5 th:text="'Công ty: ' + ${countCompany}"></h5>
+                </div>
+            </div>
+            <div class="row py-3">
+                <div class="col-8 py-3">
+                    <div>
+                        <canvas id="myChart"></canvas>
+                    </div>
+
+                    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                    <script>
+                        const ctx = document.getElementById('myChart');
+                        const userReport = async () => {
+                            const respone = await fetch('http://localhost:8080/api/admin/report-user');
+                            const myJson = await respone.json();
+                            let charLabel = []
+                            let charInfo = []
+
+                            for (let i = 0; i < myJson.length; i ++) {
+                                charLabel.push(myJson[i].username)
+                                charInfo.push(myJson[i].point)
+                            }
+
+                            console.log(myJson);
+
+                            new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: charLabel,
+                                    datasets: [{
+                                        label: 'Điểm tích luỹ',
+                                        data: charInfo,
+                                        borderWidth: 1
+                                    }]
+                                },
+                                options: {
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true
+                                        }
+                                    }
+                                }
+                            });
+
+                        }
+                        userReport()
+                    </script>
+
+
+                </div>
+                <div class="col-4">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">STT</th>
+                            <th scope="col">Username</th>
+                            <th scope="col">Họ tên</th>
+                            <th scope="col">Hình ảnh</th>
+                            <th scope="col">Điểm tích luỹ</th>
+                            <th scope="col"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="align-middle" th:each="user, iter: ${reportUserList}" th:object="${user}">
+                            <th scope="row" th:text="${iter.count}"></th>
+                            <td th:text="*{username}"></td>
+                            <td th:text="*{fullName}"></td>
+                            <td><img style="width: 65px; height: 65px;" th:src="@{'/public/img/user/' + *{image}}" alt=""/></td>
+                            <td th:text="*{point}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--    JS-->
+<div th:insert="~{template.html::script-js}"></div>
+
+</body>
+</html>
