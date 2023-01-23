@@ -53,11 +53,8 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label text-success fw-bold">Chủ sở hữu</label>
-                    <select class="form-select" aria-label="Default select example" th:field="*{user}">
-                        <option value="">----- Chọn chủ sở hữu -----</option>
-                        <option th:each="user : ${userList}" th:value="${user.id}" th:text="${'ID: ' + user.id + ' - ' + 'Name: ' + user.fullName}"></option>
-                    </select>
+                    <label class="form-label text-success fw-bold">Chủ sân</label>
+                    <input type="text" class="form-control" th:field="*{user}" placeholder="Nhập id chủ sân bóng">
                 </div>
                 <button type="submit" class="btn btn-primary mt-2">Thêm mới</button>
             </form>

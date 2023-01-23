@@ -132,6 +132,12 @@ public class OwnerController {
         return "owner/booking/list";
     }
 
+    @GetMapping("/booking/viewUser/{id}")
+    public String viewUser(@PathVariable("id") Integer id, Model model) {
+        model.addAttribute("userView", userService.findById(id));
+        return "owner/booking/view-user";
+    }
+
     @GetMapping("/myCompany/info")
     public String infoMyCompany(Model model) {
         model.addAttribute("company", getMyCompany());
@@ -142,7 +148,7 @@ public class OwnerController {
     @PostMapping("/myCompany/editInfo")
     public String doEditCompany(@ModelAttribute("company") Company company, RedirectAttributes redirectAttributes) {
         companyService.update(company);
-        redirectAttributes.addFlashAttribute("messInfo", "Cập nhật thành công");
+        redirectAttributes.addFlashAttribute("messInfo", "Đã cập nhật thông tin sân bóng");
         return "redirect:/owner/myCompany";
     }
 

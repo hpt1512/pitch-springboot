@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>MY INFO</title>
+    <title>OWNER - BOOKING - VIEW USER</title>
     <!--    Link-->
     <div th:insert="~{template.html::link}"></div>
 </head>
@@ -15,15 +15,20 @@
         <div class="col-2">
             <!--    Menu-->
             <div>
+                <div class="d-flex">
+                    <h4 class="text-white pt-3 px-3">CHỦ SÂN</h4>
+                </div>
+                <hr>
                 <ul class="list-group admin__menu__left">
-                    <a class="text-decoration-none" href="/user/info"><li class="list-group-item bg-success text-white fw-bold py-3">THÔNG TIN CÁ NHÂN</li></a>
-                    <a class="text-decoration-none" href="/user/change-password"><li class="list-group-item bg-success text-white fw-bold py-3">ĐỔI MẬT KHẨU</li></a>
+                    <a class="text-decoration-none" href="/owner/myCompany"><li class="list-group-item bg-success text-white fw-bold py-3">SÂN BÓNG CỦA TÔI</li></a>
+                    <a class="text-decoration-none" href="/owner/booking"><li class="list-group-item bg-success text-white fw-bold py-3">QUẢN LÝ ĐƠN ĐẶT SÂN</li></a>
+                    <a class="text-decoration-none" href="/owner/report-income"><li class="list-group-item bg-success text-white fw-bold py-3">THỐNG KÊ DOANH THU</li></a>
                 </ul>
             </div>
         </div>
         <div class="col-10">
-            <span style="color: blue" class="fw-bold" th:text="${mess}"></span>
-            <form class="col-8 ms-5" th:action="@{/user/edit}" method="post" th:object="${user}">
+
+            <form class="col-8 ms-5" th:object="${userView}">
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">ID</label>
                     <input readonly type="text" class="form-control" th:field="*{id}">
@@ -31,8 +36,6 @@
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Hình ảnh</label>
                     <img class="p-2 d-block mb-3" th:src="@{'/public/img/user/' + *{image}}" alt="User image" style="width: 220px; height: 220px; border: 1px solid rgb(0 0 0 / 21%);">
-<!--                    <input type="text" class="form-control" th:field="*{image}">-->
-                    <input type="file" class="form-control" th:field="*{image}">
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Tên đăng nhập</label>
@@ -44,19 +47,19 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Họ tên</label>
-                    <input type="text" class="form-control" th:field="*{fullName}">
+                    <input readonly type="text" class="form-control" th:field="*{fullName}">
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Số điện thoại</label>
-                    <input type="text" class="form-control" th:field="*{phoneNumber}">
+                    <input readonly type="text" class="form-control" th:field="*{phoneNumber}">
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Email</label>
-                    <input type="email" class="form-control" th:field="*{email}">
+                    <input readonly type="email" class="form-control" th:field="*{email}">
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Địa chỉ</label>
-                    <input type="text" class="form-control" th:field="*{address}">
+                    <input readonly type="text" class="form-control" th:field="*{address}">
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Point</label>
@@ -70,7 +73,6 @@
                     <label class="form-label text-success fw-bold">Role</label>
                     <input readonly type="text" class="form-control" th:field="*{role}">
                 </div>
-                <button type="submit" class="btn btn-primary mt-2">Cập nhật thông tin</button>
             </form>
 
         </div>

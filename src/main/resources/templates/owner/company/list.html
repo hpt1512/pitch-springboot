@@ -32,7 +32,7 @@
         </div>
         <div class="col-10">
             <h4 class="text-danger">SÂN BÓNG CỦA TÔI</h4>
-            <span style="color: blue" th:text="${messInfo}"></span>
+            <span style="color: blue" class="fw-bold" th:text="${messInfo}"></span>
             <div class="py-2 my-2 mb-5 bg-light d-flex" th:object="${company}">
                 <img class="p-2" th:src="@{'/public/img/company/' + *{image}}" alt=""
                      style="border-radius: 20px; width: 280px; height: 220px">
@@ -70,7 +70,7 @@
                 </form>
             </div>
 
-            <span style="color: blue" th:text="${mess}"></span>
+            <span style="color: blue" class="fw-bold" th:text="${mess}"></span>
 
             <form th:action="@{/owner/myCompany/create}" method="post" th:object="${newPitch}">
                 <table style="display: none" class="table table-striped" id="formCreatePitch">

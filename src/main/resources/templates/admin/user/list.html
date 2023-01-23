@@ -22,16 +22,22 @@
                 <a href="/admin/user/create">
                     <button type="button" class="btn btn-success"><i class="bi bi-plus-circle me-2"></i>Thêm mới</button>
                 </a>
-                <form class="d-flex" method="get" th:action="@{/admin/user/find}">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="input_find">
-                    <button class="btn btn-success w-50" type="submit">Tìm kiếm</button>
-                </form>
+                <div class="d-flex">
+                    <form class="d-flex" method="get" th:action="@{/admin/user/findById}">
+                        <input class="form-control me-2" type="search" placeholder="ID" aria-label="Search" name="id_find">
+                    </form>
+                    <form class="d-flex" method="get" th:action="@{/admin/user/find}">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="input_find">
+                        <button class="btn btn-success w-50" type="submit">Tìm kiếm</button>
+                    </form>
+                </div>
             </div>
             <span style="color: blue" class="d-block mb-3 fw-bold" th:if="${mess != null}" th:text="${mess}"></span>
             <table class="table table-striped">
                 <thead>
                 <tr>
                     <th scope="col">STT</th>
+                    <th scope="col">ID</th>
                     <th scope="col">Username</th>
                     <th scope="col">Quyền</th>
                     <th scope="col">Họ tên</th>
@@ -45,9 +51,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <tr class="align-middle" th:each="user, iter: ${userList}" th:object="${user}"  th:if="${user.status == 1}">
+                    <tr class="align-middle" th:each="user, iter: ${userList}" th:object="${user}"  th:if="${user != null && user.status == 1}">
                         <th scope="row" th:text="${iter.count}"></th>
-                        <td hidden th:text="*{id}"></td>
+                        <td th:text="*{id}"></td>
                         <td th:text="*{username}"></td>
                         <td hidden th:text="*{password}"></td>
 

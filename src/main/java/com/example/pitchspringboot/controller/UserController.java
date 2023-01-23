@@ -61,6 +61,7 @@ public class UserController {
 
         User userSessionUpdated = (User) session.getAttribute("user");
         model.addAttribute("user", userSessionUpdated);
+        model.addAttribute("mess", "Đã cập nhật thông tin");
 
         return "user/info";
     }

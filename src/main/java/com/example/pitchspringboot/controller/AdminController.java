@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,6 +59,7 @@ public class AdminController {
         User userSession = (User) session.getAttribute("user");
         model.addAttribute("user", userSession);
         User user = new User();
+        user.setPassword("customer");
         user.setPoint(0);
         user.setStatus(1);
         model.addAttribute("newUser", user);
@@ -122,6 +124,20 @@ public class AdminController {
             return "redirect:/admin/user";
         }
         List<User> userList = userService.findByName(input_find);
+        model.addAttribute("userList", userList);
+        return "admin/user/list";
+    }
+
+    @GetMapping("/user/findById")
+    public String findUserById(@RequestParam("id_find") Integer id_find, Model model) {
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
+        if ("".equals(id_find)) {
+            return "redirect:/admin/user";
+        }
+        User user = userService.findById(id_find);
+        List<User> userList = new ArrayList<>();
+        userList.add(user);
         model.addAttribute("userList", userList);
         return "admin/user/list";
     }

@@ -70,7 +70,9 @@
                     <td hidden th:text="*{id}"></td>
                     <td th:text="*{pitch.company.name}"></td>
                     <td th:text="*{pitch.name}"></td>
-                    <td th:text="*{user.username}"></td>
+
+                    <td><a th:href="@{/owner/booking/viewUser/{id}(id=*{user.id})}" th:text="*{user.username}"></a></td>
+
                     <td th:text="*{date}"></td>
                     <td th:text="*{time}"></td>
                     <td th:text="*{price}"></td>
