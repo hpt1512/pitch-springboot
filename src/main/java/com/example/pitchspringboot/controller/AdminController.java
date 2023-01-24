@@ -35,6 +35,8 @@ public class AdminController {
     PitchServiceImpl pitchService;
     @Autowired
     HttpSession session;
+    private List<String> timeList = Arrays.asList("08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
+
     @GetMapping("/user")
     public String listUser(Model model) {
         User userSession = (User) session.getAttribute("user");
@@ -218,7 +220,6 @@ public class AdminController {
         model.addAttribute("user", userSession);
         model.addAttribute("bookingList", bookingService.findAll());
         model.addAttribute("companyList", companyService.findAll());
-        List<String> timeList = Arrays.asList("15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
         model.addAttribute("timeList", timeList);
         model.addAttribute("pitchList", pitchService.findAll());
 
@@ -245,7 +246,6 @@ public class AdminController {
         }
         List<Booking> bookingList = bookingService.findByPitchDateTimeCustoms(pitchFindId, datePlay, timePlay);
         model.addAttribute("bookingList", bookingList);
-        List<String> timeList = Arrays.asList("15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
         model.addAttribute("timeList", timeList);
         model.addAttribute("pitchList", pitchService.findAll());
         return "admin/booking/list";
@@ -271,7 +271,6 @@ public class AdminController {
 
         List<IRepostCompany> reportCompanyList = companyService.getReportCompany();
         model.addAttribute("reportCompanyList", reportCompanyList);
-
 
         return "admin/report/company-report";
     }

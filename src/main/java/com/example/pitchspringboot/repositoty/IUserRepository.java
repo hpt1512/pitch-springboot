@@ -23,9 +23,9 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
     @Transactional
     @Query(value="update `user` set `point` = `point` + 1 where id = ?;", nativeQuery=true)
     void raisePoint(Integer id);
-    @Query(value = "select count(id) from user where status = 1;", nativeQuery = true)
+    @Query(value = "select count(id) from user where status = 1 and id_role = 2;", nativeQuery = true)
     Integer countAllUser();
-    @Query(value = "select * from user where id_role = 2 order by point desc limit 5;", nativeQuery = true)
+    @Query(value = "select * from user where id_role = 2 and status = 1 order by point desc limit 6;", nativeQuery = true)
     List<User> reportUser();
     @Modifying
     @Transactional

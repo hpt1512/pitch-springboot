@@ -32,6 +32,7 @@ public class HomeController {
     @Autowired
     UserValidate userValidate;
 
+
     @GetMapping("/")
     public String home(Model model) {
         User userSession = (User) session.getAttribute("user");

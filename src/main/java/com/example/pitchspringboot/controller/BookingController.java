@@ -31,6 +31,7 @@ public class BookingController {
     IBaseService<User> userService;
     @Autowired
     HttpSession session;
+    private List<String> timeList = Arrays.asList("08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
 
     @Autowired
     BookingValidate bookingValidate;
@@ -78,7 +79,7 @@ public class BookingController {
         booking.setPrice(pitch.getPrice() - voucher.getBonus()); //đặt giá mặc định
 
 
-        List<String> timeList = Arrays.asList("15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
+//        List<String> timeList = Arrays.asList("15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
         model.addAttribute("timeList", timeList);
 
         model.addAttribute("pitch", pitch);
@@ -92,7 +93,7 @@ public class BookingController {
                                 Model model, RedirectAttributes redirectAttributes) {
         bookingValidate.validate(booking, bindingResult);
         if (bindingResult.hasErrors()) {
-            List<String> timeList = Arrays.asList("15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
+//            List<String> timeList = Arrays.asList("15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
             model.addAttribute("timeList", timeList);
             model.addAttribute("pitch", booking.getPitch());
             Company company = companyService.findById(booking.getPitch().getCompany().getId());
