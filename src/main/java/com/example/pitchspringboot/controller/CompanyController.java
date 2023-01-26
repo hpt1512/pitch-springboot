@@ -1,10 +1,8 @@
 package com.example.pitchspringboot.controller;
 
-import com.example.pitchspringboot.model.Company;
-import com.example.pitchspringboot.model.Location;
-import com.example.pitchspringboot.model.Pitch;
-import com.example.pitchspringboot.model.User;
+import com.example.pitchspringboot.model.*;
 import com.example.pitchspringboot.service.IBaseService;
+import com.example.pitchspringboot.service.impl.CommentServiceImpl;
 import com.example.pitchspringboot.service.impl.CompanyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -28,6 +28,8 @@ public class CompanyController {
     IBaseService<Pitch> pitchService;
     @Autowired
     IBaseService<User> userService;
+    @Autowired
+    CommentServiceImpl commentService;
     @Autowired
     HttpSession session;
     @GetMapping("")
@@ -64,6 +66,23 @@ public class CompanyController {
         }
 
         model.addAttribute("companyAroundList", companyAroundList);
+
+        Comment comment = new Comment();
+        comment.setCompany(company);
+        comment.setUser(userSession);
+        comment.setLikes(0);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formatDateTime = now.format(formatter);
+
+        comment.setDateTimeCreated(formatDateTime); //đặt thời gian bình luận
+
+        model.addAttribute("comment", comment);
+
+        List<Comment> commentList = commentService.findCommentByCompany(company);
+        model.addAttribute("commentList", commentList);
+        model.addAttribute("countComment", commentService.countCommentByCompany(company));
+
 
         return "pitch/list";
     }

@@ -60,6 +60,7 @@
                     <th scope="col">Ghi chú</th>
                     <th scope="col">Voucher</th>
                     <th scope="col">Trạng thái</th>
+                    <th scope="col">Thời gian tạo đơn</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -90,6 +91,7 @@
                     <td style="color: red" class="fw-bold" th:if="*{status == 2}">Đã từ chối</td>
                     <td style="color: green" class="fw-bold" th:if="*{status == 3}">Đã thanh toán</td>
 
+                    <td th:text="*{dateTimeCreated}"></td>
 
                     <td class="px-4">
                         <div th:if="*{status == 0}" class="btn-group" role="group" aria-label="Basic mixed styles example">

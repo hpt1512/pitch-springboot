@@ -33,6 +33,8 @@ public class Booking {
     private Voucher voucher;
     @Column(name = "`status`", columnDefinition = "int default 0")
     private Integer status;
+    @Column(name = "datetime_created")
+    private String dateTimeCreated;
 
     public Booking() {
     }
@@ -47,6 +49,19 @@ public class Booking {
         this.note = note;
         this.voucher = voucher;
         this.status = status;
+    }
+
+    public Booking(Integer id, Pitch pitch, User user, Date date, String time, Integer price, String note, Voucher voucher, Integer status, String dateTimeCreated) {
+        this.id = id;
+        this.pitch = pitch;
+        this.user = user;
+        this.date = date;
+        this.time = time;
+        this.price = price;
+        this.note = note;
+        this.voucher = voucher;
+        this.status = status;
+        this.dateTimeCreated = dateTimeCreated;
     }
 
     public Integer getId() {
@@ -119,5 +134,13 @@ public class Booking {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getDateTimeCreated() {
+        return dateTimeCreated;
+    }
+
+    public void setDateTimeCreated(String dateTimeCreated) {
+        this.dateTimeCreated = dateTimeCreated;
     }
 }

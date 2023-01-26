@@ -5,6 +5,7 @@
     <title>PITCH</title>
     <!--    Link-->
     <div th:insert="~{template.html::link}"></div>
+
 </head>
 <body>
 <div class="app">
@@ -68,6 +69,69 @@
                 </tr>
                 </tbody>
             </table>
+
+            <span class="d-block py-3" th:text="${countComment + ' đánh giá'}"></span>
+            <form th:if="${user != null}" class="d-flex" th:action="@{/user/comment}" method="post" th:object="${comment}">
+                <img style="width: 50px; height: 50px; border-radius: 50%" th:src="@{'/public/img/user/' + ${user.image}}"
+                     alt=""/>
+                <input hidden th:field="*{user}">
+                <input hidden th:field="*{likes}">
+                <input hidden th:field="*{company}">
+                <input hidden th:field="*{dateTimeCreated}">
+                <input class="form-control ms-3 me-3" style="border-radius: 0%; border: white; border-bottom: 1px solid black"
+                       placeholder="Viết đánh giá.." th:field="*{content}">
+                <button style="border: none; background-color: white; width: 5%" type="submit">
+                    <img class="w-75" src="/public/img/logo/send-logo.png">
+                </button>
+            </form>
+
+            <ul class="list-group border border-white">
+
+
+
+
+                <li class="list-group-item border border-white py-3 px-0 d-flex justify-content-between" th:each="commentItem, iter : ${commentList}" th:object="${commentItem}">
+                    <div class="d-flex align-items-center w-100">
+                        <img style="width: 50px; height: 50px; border-radius: 50%" th:src="@{'/public/img/user/' + *{user.image}}"
+                             alt=""/>
+                        <div class="ms-3 w-100">
+                            <h6 class="d-inline-block me-2" th:text="*{user.fullName}"></h6>
+                            <span style="font-size: 90%; opacity: 80%" th:text="*{dateTimeCreated}"></span>
+                            <span class="ms-3" style="font-size: 90%; opacity: 80%" th:text="${iter.index}"></span>
+                            <span class="d-block cmt-content" th:text="*{content}"></span>
+
+                            <form class="d-none w-100 form-update-cmt" th:action="@{/user/comment/update}" method="post">
+                                <input hidden class="w-100" th:value="*{id}" name="comment_id">
+                                <input class="w-100" th:value="*{content}" name="comment_content">
+                                <div class="btn-group-sm mt-1" role="group" aria-label="Basic example">
+                                    <button type="submit" class="btn btn-primary">Lưu</button>
+                                    <button type="button" class="btn btn-light" th:onclick="offFormUpdateCmt([[${iter.index}]])">Huỷ</button>
+                                </div>
+                            </form>
+
+
+                            <div>
+                                <img class="cursor__hover btn-like-white" style="width: 20px" src="/public/img/logo/like-white.png">
+                                <img class="cursor__hover btn-like-blue" style="width: 20px; display: none" src="/public/img/logo/like-blue.png">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-menu-comment">
+                        <i class="bi bi-three-dots-vertical d-flex align-items-center cursor__hover menu-comment-icon"></i>
+                        <ul style="display: none; list-style: none; box-shadow: 0 3px 5px 0 rgb(0 0 0 / 5%), 0 0px 20px 0 rgb(0 0 0 / 5%); z-index: 99999" class="bg-light px-3 pt-2 menu-comment" th:if="${user != null}">
+                            <li th:if="${user.id == commentItem.user.id}" style="cursor: pointer; width: 80px" class="py-1 btn-show-update-cmt-form" th:onclick="showFormUpdateCmt([[${iter.index}]])">Chỉnh sửa</li>
+                            <li th:if="${user.role.id == 1 || user.id == company.user.id || user.id == commentItem.user.id}" style="cursor: pointer" class="py-1"><a th:href="@{/user/comment/delete/{id}(id=${commentItem.id})}">Xoá</a></li>
+                        </ul>
+                    </div>
+
+                </li>
+
+
+
+
+
+            </ul>
+
         </div>
         <div class="col-3">
             <span class="py-3 d-block text-success fw-bold">
@@ -77,7 +141,8 @@
             <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
                 <div class="carousel-inner">
                     <div class="carousel-item active" th:object="${companyAroundActive}">
-                        <a class="text-decoration-none" th:if="${companyAroundActive != null}" th:href="@{/company/{id}/pitch(id = *{id})}">
+                        <a class="text-decoration-none" th:if="${companyAroundActive != null}"
+                           th:href="@{/company/{id}/pitch(id = *{id})}">
                             <div class="py-2 my-2 bg-light">
                                 <img class="p-2" th:src="@{'/public/img/company/' + *{image}}" alt=""
                                      style="border-radius: 20px; width: 100%; height: 220px">
@@ -100,7 +165,8 @@
                     </div>
                     <div class="carousel-item" th:each="companyAround : ${companyAroundList}"
                          th:object="${companyAround}">
-                        <a class="text-decoration-none" th:if="${companyAround != null}" th:href="@{/company/{id}/pitch(id = *{id})}">
+                        <a class="text-decoration-none" th:if="${companyAround != null}"
+                           th:href="@{/company/{id}/pitch(id = *{id})}">
                             <div class="py-2 my-2 bg-light">
                                 <img class="p-2" th:src="@{'/public/img/company/' + *{image}}" alt=""
                                      style="border-radius: 20px; width: 100%; height: 220px">
@@ -139,5 +205,88 @@
 </div>
 <!--    JS-->
 <div th:insert="~{template.html::script-js}"></div>
+<script>
+    let btn_like_white = document.getElementsByClassName("btn-like-white");
+    let btn_like_blue = document.getElementsByClassName("btn-like-blue");
+
+    for (let i = 0; i < btn_like_white.length; i++) {
+        btn_like_white[i].addEventListener("click", function () {
+            btn_like_white[i].style.display = "none";
+
+            for (let j = 0; j < btn_like_blue.length; j++) {
+                if (i === j) {
+                    btn_like_blue[j].style.display = "block";
+                }
+            }
+
+        })
+    }
+
+    let btn_menu_comment = document.getElementsByClassName("btn-menu-comment");
+    let menu_comment = document.getElementsByClassName("menu-comment");
+    let menu_comment_icon = document.getElementsByClassName("menu-comment-icon");
+
+    for (let i = 0; i < btn_menu_comment.length; i++) {
+        btn_menu_comment[i].addEventListener("mouseover", function () {
+            for (let j = 0; j < menu_comment.length; j++) {
+                if (i === j) {
+                    menu_comment[j].style.display = "block";
+                    for (let k = 0; k < menu_comment_icon.length; k++) {
+                        if (j === k) {
+                            menu_comment_icon[k].classList.add("d-none");
+                        }
+                    }
+                }
+            }
+        })
+    }
+    for (let i = 0; i < btn_menu_comment.length; i++) {
+        btn_menu_comment[i].addEventListener("mouseout", function () {
+            for (let j = 0; j < menu_comment.length; j++) {
+                if (i === j) {
+                    menu_comment[j].style.display = "none";
+                    for (let k = 0; k < menu_comment_icon.length; k++) {
+                        if (j === k) {
+                            menu_comment_icon[k].classList.remove("d-none");
+                        }
+                    }
+                }
+            }
+        })
+    }
+
+
+    // form-update-cmt
+    // btn-show-update-cmt-form
+    // let btn_show_update_cmt_form = document.getElementsByClassName("btn-show-update-cmt-form");
+    let cmt_content = document.getElementsByClassName("cmt-content");
+    let form_update_cmt = document.getElementsByClassName("form-update-cmt");
+    function showFormUpdateCmt(index) {
+        console.log(index)
+        for (let i = 0; i < form_update_cmt.length; i++) {
+            if (i === index) {
+                form_update_cmt[i].classList.remove("d-none");
+                form_update_cmt[i].style.display = "block";
+                cmt_content[i].classList.remove("d-block");
+                cmt_content[i].classList.add("d-none");
+            }
+        }
+    }
+    function offFormUpdateCmt(index) {
+        console.log(index)
+        for (let i = 0; i < form_update_cmt.length; i++) {
+            if (i === index) {
+                form_update_cmt[i].classList.remove("d-block");
+                form_update_cmt[i].style.display = "none";
+                cmt_content[i].classList.remove("d-none");
+                cmt_content[i].classList.add("d-block");
+            }
+        }
+    }
+
+
+
+
+</script>
 </body>
 </html>

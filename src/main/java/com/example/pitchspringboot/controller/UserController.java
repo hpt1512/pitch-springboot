@@ -1,9 +1,12 @@
 package com.example.pitchspringboot.controller;
 
 import com.example.pitchspringboot.model.Booking;
+import com.example.pitchspringboot.model.Comment;
+import com.example.pitchspringboot.model.Company;
 import com.example.pitchspringboot.model.User;
 import com.example.pitchspringboot.service.IBaseService;
 import com.example.pitchspringboot.service.impl.BookingServiceImpl;
+import com.example.pitchspringboot.service.impl.CommentServiceImpl;
 import com.example.pitchspringboot.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +26,8 @@ public class UserController {
     UserServiceImpl userService;
     @Autowired
     BookingServiceImpl bookingService;
+    @Autowired
+    CommentServiceImpl commentService;
     @GetMapping("/myBooking")
     public String myBooking(Model model) {
         User userSession = (User) session.getAttribute("user");
@@ -73,25 +78,26 @@ public class UserController {
         return "user/change-password";
     }
 
-//    @PostMapping("/changePassword")
-//    public String changePassword(Model model, @ModelAttribute("user") User user,
-//                                 @RequestParam("oldPassword") String oldPassword,
-//                                 @RequestParam("newCopyPassword") String newCopyPassword) {
-//        User userSession = (User) session.getAttribute("user");
-//
-//        if (!oldPassword.equals(userSession.getPassword())) {
-//            model.addAttribute("mess", "Mật khẩu cũ không đúng");
-//        } else if (!newCopyPassword.equals(user.getPassword())) {
-//            model.addAttribute("mess", "Hai mật khẩu không khớp nhau, vui lòng kiểm tra lại");
-//        } else {
-//            userService.update(user);
-//            User userUpdated = userService.findById(userSession.getId());
-//            session.setAttribute("user", userUpdated);
-//
-//            User userSessionUpdated = (User) session.getAttribute("user");
-//            model.addAttribute("user", userSessionUpdated);
-//        }
-//        return "user/change-password";
-//    }
+    @PostMapping("/comment")
+    public String comment(@ModelAttribute("comment")Comment comment) {
+        commentService.insert(comment);
+        String id = String.valueOf(comment.getCompany().getId());
+        return "redirect:/company/" + id + "/pitch";
+    }
 
+    @GetMapping("/comment/delete/{id}")
+    public String deleteComment(@PathVariable("id") Integer id) {
+        Comment comment = commentService.findById(id);
+        commentService.delete(comment);
+        String idCompany = String.valueOf(comment.getCompany().getId());
+        return "redirect:/company/" + idCompany + "/pitch";
+    }
+
+    @PostMapping("/comment/update")
+    public String updateComment(@RequestParam Integer comment_id, @RequestParam String comment_content) {
+        commentService.updateContentById(comment_content, comment_id);
+        Comment comment = commentService.findById(comment_id);
+        String idCompany = String.valueOf(comment.getCompany().getId());
+        return "redirect:/company/" + idCompany + "/pitch";
+    }
 }

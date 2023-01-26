@@ -13,6 +13,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,9 +63,6 @@ public class BookingController {
         //đặt voucher mặc định - Lấy user đã update point từ database
         Voucher voucher = new Voucher();
 
-
-
-
         if (user.getPoint() % 5 == 0 && user.getPoint() != 0) {
             if (bookingService.findByUserAndStatus(user, 1).size() == 0 && bookingService.findByUserAndStatus(user, 2).size() == 0
                     && bookingService.findByUserAndStatus(user, 0).size() == 0) {
@@ -78,8 +77,12 @@ public class BookingController {
 
         booking.setPrice(pitch.getPrice() - voucher.getBonus()); //đặt giá mặc định
 
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formatDateTime = now.format(formatter);
 
-//        List<String> timeList = Arrays.asList("15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
+        booking.setDateTimeCreated(formatDateTime); //đặt thời gian tạo đơn
+
         model.addAttribute("timeList", timeList);
 
         model.addAttribute("pitch", pitch);
@@ -93,7 +96,6 @@ public class BookingController {
                                 Model model, RedirectAttributes redirectAttributes) {
         bookingValidate.validate(booking, bindingResult);
         if (bindingResult.hasErrors()) {
-//            List<String> timeList = Arrays.asList("15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
             model.addAttribute("timeList", timeList);
             model.addAttribute("pitch", booking.getPitch());
             Company company = companyService.findById(booking.getPitch().getCompany().getId());
