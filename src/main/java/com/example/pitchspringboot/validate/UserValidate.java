@@ -23,5 +23,12 @@ public class UserValidate implements Validator {
         if (userService.findByUsername(user.getUsername()).size() != 0) {
             errors.rejectValue("username","username.validate",null,"Tên tài khoản đã tồn tại");
         }
+
+        if (user.getPhoneNumber().length() != 10) {
+            errors.rejectValue("phoneNumber", "phoneNumber.length", new String[]{"10"}, "Số điện thoại phải có 10 chữ số");
+        } else if (!user.getPhoneNumber().startsWith("0")) {
+            errors.rejectValue("phoneNumber", "phoneNumber.start", "Số điện thoại phải bắt đầu bằng số 0");
+        }
+
     }
 }

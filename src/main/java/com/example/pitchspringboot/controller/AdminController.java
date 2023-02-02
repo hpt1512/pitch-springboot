@@ -7,13 +7,19 @@ import com.example.pitchspringboot.service.impl.BookingServiceImpl;
 import com.example.pitchspringboot.service.impl.CompanyServiceImpl;
 import com.example.pitchspringboot.service.impl.PitchServiceImpl;
 import com.example.pitchspringboot.service.impl.UserServiceImpl;
+import com.example.pitchspringboot.validate.CompanyValidate;
+import com.example.pitchspringboot.validate.UserValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +39,10 @@ public class AdminController {
     IBaseService<Location> locationService;
     @Autowired
     PitchServiceImpl pitchService;
+    @Autowired
+    UserValidate userValidate;
+    @Autowired
+    CompanyValidate companyValidate;
     @Autowired
     HttpSession session;
     private List<String> timeList = Arrays.asList("08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
@@ -70,7 +80,12 @@ public class AdminController {
     }
 
     @PostMapping("/user/doCreate")
-    public String doCreateUser(@ModelAttribute("newUser") User newUser, RedirectAttributes redirectAttributes) {
+    public String doCreateUser(@Valid @ModelAttribute("newUser") User newUser, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        userValidate.validate(newUser, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("roleList", roleService.findAll());
+            return "admin/user/create";
+        }
         userService.insert(newUser);
         redirectAttributes.addFlashAttribute("mess", "Thêm mới thành công");
         return "redirect:/admin/user";
@@ -172,17 +187,29 @@ public class AdminController {
         User userSession = (User) session.getAttribute("user");
         model.addAttribute("user", userSession);
 
-        model.addAttribute("newCompany", new Company());
+        Company company = new Company();
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String formatDateTime = now.format(formatter);
+
+        company.setDateTimeCreated(formatDateTime); //đặt thời gian tạo sân
+
+        model.addAttribute("newCompany", company);
         model.addAttribute("userList", userService.findAll());
         model.addAttribute("locationList", locationService.findAll());
         return "admin/company/create";
     }
 
     @PostMapping("/company/doCreate")
-    public String doCreateCompany(@ModelAttribute("newCompany") Company newCompany, RedirectAttributes redirectAttributes) {
+    public String doCreateCompany(@Valid @ModelAttribute("newCompany") Company newCompany, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        companyValidate.validate(newCompany, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("locationList", locationService.findAll());
+            return "admin/company/create";
+        }
         companyService.insert(newCompany);
         userService.addRoleOwner(newCompany.getUser().getId());
-        redirectAttributes.addFlashAttribute("mess", "Thêm mới thành công");
+        redirectAttributes.addFlashAttribute("mess", "Thêm mới sân bóng thành công");
         return "redirect:/admin/company";
     }
 

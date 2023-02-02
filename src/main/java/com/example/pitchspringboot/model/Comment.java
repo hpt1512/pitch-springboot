@@ -1,6 +1,7 @@
 package com.example.pitchspringboot.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity(name = "comment")
 public class Comment {
@@ -8,6 +9,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Column(name = "content")
+    @NotBlank
     private String content;
     @Column(name = "likes")
     private Integer likes;

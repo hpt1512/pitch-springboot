@@ -1,6 +1,12 @@
 package com.example.pitchspringboot.model;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "pitch")
 public class Pitch {
@@ -9,10 +15,15 @@ public class Pitch {
     @Column(name = "id")
     private Integer id;
     @Column(name = "`name`", nullable = false, columnDefinition = "varchar(45)")
+    @NotBlank(message = "{notempty}")
     private String name;
     @Column(name = "people_max", nullable = false)
+    @NotNull(message = "{notempty}")
     private Integer peopleMax;
     @Column(name = "price", nullable = false)
+    @NotNull(message = "{notempty}")
+    @Min(value = 0, message = "Giá sân không được bé hơn 0")
+    @Max(value = 500000, message = "Giá sân không được lớn hơn 500000")
     private Integer price;
     @Column(name = "`status`", columnDefinition = "int default 0")
     private Integer status;

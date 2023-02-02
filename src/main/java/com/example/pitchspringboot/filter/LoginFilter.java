@@ -34,11 +34,11 @@ public class LoginFilter implements Filter {
 //            }
 //        }
 
-        if (path.contains("/login") || path.contains("/register") || (path.contains("/") && path.length() == 1)  || path.contains("/company") || path.contains("bootstrap-5.1.3-dist")
+        if (path.contains("/login") || path.contains("/register") || (path.contains("/") && path.length() == 1)  || path.contains("/company") || path.contains("/user/view-user") || path.contains("bootstrap-5.1.3-dist")
                 || path.contains("css") || path.contains("img") || path.contains("/err-not-login")) {
             chain.doFilter(req, resp);
         } else if (user == null) {
-            response.sendRedirect("/err-not-login");
+            response.sendRedirect("/login");
         } else {
             chain.doFilter(req, resp);
         }

@@ -84,20 +84,17 @@
                     <img class="w-75" src="/public/img/logo/send-logo.png">
                 </button>
             </form>
-
+            <span class="text-danger" th:text="${errCmt}"></span>
             <ul class="list-group border border-white">
-
-
-
 
                 <li class="list-group-item border border-white py-3 px-0 d-flex justify-content-between" th:each="commentItem, iter : ${commentList}" th:object="${commentItem}">
                     <div class="d-flex align-items-center w-100">
                         <img style="width: 50px; height: 50px; border-radius: 50%" th:src="@{'/public/img/user/' + *{user.image}}"
                              alt=""/>
                         <div class="ms-3 w-100">
-                            <h6 class="d-inline-block me-2" th:text="*{user.fullName}"></h6>
+                            <a th:href="@{/user/view-user/{id}(id=*{user.id})}"><h6 class="d-inline-block me-2" th:text="*{user.fullName}"></h6></a>
                             <span style="font-size: 90%; opacity: 80%" th:text="*{dateTimeCreated}"></span>
-                            <span class="ms-3" style="font-size: 90%; opacity: 80%" th:text="${iter.index}"></span>
+<!--                            <span class="ms-3" style="font-size: 90%; opacity: 80%" th:text="${iter.index}"></span>-->
                             <span class="d-block cmt-content" th:text="*{content}"></span>
 
                             <form class="d-none w-100 form-update-cmt" th:action="@{/user/comment/update}" method="post">
@@ -109,7 +106,6 @@
                                 </div>
                             </form>
 
-
                             <div>
                                 <img class="cursor__hover btn-like-white" style="width: 20px" src="/public/img/logo/like-white.png">
                                 <img class="cursor__hover btn-like-blue" style="width: 20px; display: none" src="/public/img/logo/like-blue.png">
@@ -119,16 +115,12 @@
                     <div class="btn-menu-comment">
                         <i class="bi bi-three-dots-vertical d-flex align-items-center cursor__hover menu-comment-icon"></i>
                         <ul style="display: none; list-style: none; box-shadow: 0 3px 5px 0 rgb(0 0 0 / 5%), 0 0px 20px 0 rgb(0 0 0 / 5%); z-index: 99999" class="bg-light px-3 pt-2 menu-comment" th:if="${user != null}">
-                            <li th:if="${user.id == commentItem.user.id}" style="cursor: pointer; width: 80px" class="py-1 btn-show-update-cmt-form" th:onclick="showFormUpdateCmt([[${iter.index}]])">Chỉnh sửa</li>
-                            <li th:if="${user.role.id == 1 || user.id == company.user.id || user.id == commentItem.user.id}" style="cursor: pointer" class="py-1"><a th:href="@{/user/comment/delete/{id}(id=${commentItem.id})}">Xoá</a></li>
+                            <li th:if="${user.id == commentItem.user.id}" style="color: blue; cursor: pointer; width: 80px" class="py-1 btn-show-update-cmt-form" th:onclick="showFormUpdateCmt([[${iter.index}]])">Chỉnh sửa</li>
+                            <li th:if="${user.role.id == 1 || user.id == company.user.id || user.id == commentItem.user.id}" style="cursor: pointer" class="py-1"><a style="text-decoration: none; color: blue;" th:href="@{/user/comment/delete/{id}(id=${commentItem.id})}">Xoá</a></li>
                         </ul>
                     </div>
 
                 </li>
-
-
-
-
 
             </ul>
 

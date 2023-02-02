@@ -23,6 +23,7 @@
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Tên công ty</label>
                     <input type="text" class="form-control" th:field="*{name}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Hình ảnh</label>
@@ -32,14 +33,17 @@
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Số điện thoại</label>
                     <input type="text" class="form-control" th:field="*{phoneNumber}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Email</label>
                     <input type="email" class="form-control" th:field="*{email}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Địa chỉ</label>
                     <input type="text" class="form-control" th:field="*{address}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
                 </div>
                 <div hidden class="mb-3">
                     <label class="form-label text-success fw-bold">MapUrl</label>
@@ -48,13 +52,17 @@
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Quận/Huyện</label>
                     <select class="form-select" aria-label="Default select example" th:field="*{location}">
-                        <option value="">----- Chọn Quận/Huyện -----</option>
                         <option th:each="location : ${locationList}" th:value="${location.id}" th:text="${location.name}"></option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Chủ sân</label>
                     <input type="text" class="form-control" th:field="*{user}" placeholder="Nhập id chủ sân bóng">
+                    <span class="text-danger" th:if="${#fields.hasErrors('user')}" th:errors="*{user}"></span>
+                </div>
+                <div hidden class="mb-3">
+                    <label class="form-label text-success fw-bold">DateTimeCreated</label>
+                    <input type="text" class="form-control" th:field="*{dateTimeCreated}">
                 </div>
                 <button type="submit" class="btn btn-primary mt-2">Thêm mới</button>
             </form>

@@ -39,6 +39,7 @@
                     <th scope="col">Email</th>
                     <th scope="col">Địa chỉ</th>
                     <th scope="col">Chủ sân</th>
+                    <th scope="col">Ngày tạo sân</th>
                     <th scope="col"></th>
                 </tr>
                 </thead>
@@ -53,6 +54,7 @@
                         <td th:text="*{email}"></td>
                         <td th:text="*{address}"></td>
                         <td th:text="*{user.username}"></td>
+                        <td th:text="*{dateTimeCreated}"></td>
                         <td class="px-4">
                             <div class="btn-group" role="group" aria-label="Basic mixed styles example">
                                 <a th:href="@{/admin/company/edit/{id}(id=${company.id})}"><button type="button" class="btn btn-sm btn-warning mx-1">Sửa</button></a>

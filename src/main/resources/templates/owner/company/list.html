@@ -69,19 +69,25 @@
                     <button class="btn btn-success w-50" type="submit">Tìm kiếm</button>
                 </form>
             </div>
-
+            <input hidden th:if="${checkBlock != null}" th:value="${checkBlock}" id="checkBlock">
             <span style="color: blue" class="fw-bold" th:text="${mess}"></span>
 
             <form th:action="@{/owner/myCompany/create}" method="post" th:object="${newPitch}">
                 <table style="display: none" class="table table-striped" id="formCreatePitch">
                     <tbody>
                     <tr>
-                        <td style="width: 35%"><input type="text" class="form-control" th:field="*{name}"
-                                                      placeholder="Nhập tên sân"></td>
-                        <td style="width: 35%"><input type="text" class="form-control" th:field="*{peopleMax}"
-                                                      placeholder="Nhập số người"></td>
-                        <td style="width: 35%"><input type="text" class="form-control" th:field="*{price}"
-                                                      placeholder="Nhập giá"></td>
+                        <td style="width: 35%">
+                            <input type="text" class="form-control" th:field="*{name}" placeholder="Nhập tên sân">
+                            <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                        </td>
+                        <td style="width: 35%">
+                            <input type="text" class="form-control" th:field="*{peopleMax}" placeholder="Nhập số người">
+                            <span class="text-danger" th:if="${#fields.hasErrors('peopleMax')}" th:errors="*{peopleMax}"></span>
+                        </td>
+                        <td style="width: 35%">
+                            <input type="text" class="form-control" th:field="*{price}" placeholder="Nhập giá">
+                            <span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+                        </td>
                         <td hidden><input type="text" class="form-control" th:field="*{status}"></td>
                         <td hidden><input type="text" class="form-control" th:field="*{company}"></td>
                         <td>
@@ -171,6 +177,12 @@
         document.getElementById("deleteName").innerText = name;
         document.getElementById("deleteId").value = id;
     }
+
+    let checkBlock = document.getElementById("checkBlock").value;
+    if (checkBlock == 1) {
+        document.getElementById("formCreatePitch").style.display = "block";
+    }
+
 </script>
 </body>
 </html>

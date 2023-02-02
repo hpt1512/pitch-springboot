@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>USER - VIEW USER</title>
+    <!--    Link-->
+    <div th:insert="~{template.html::link}"></div>
+</head>
+<body>
+<div class="app">
+    <!--    Header-->
+    <div th:insert="~{template.html::header}"></div>
+    <!-- Content -->
+    <div class="content row my-3 mx-3">
+        <div class="col-2">
+            <!--    Menu-->
+            <div>
+                <ul class="list-group admin__menu__left">
+                    <a class="text-decoration-none"><li class="list-group-item bg-success text-white fw-bold py-3">THÔNG TIN NGƯỜI DÙNG</li></a>
+                </ul>
+            </div>
+        </div>
+        <div class="col-10">
+
+            <form class="col-8 ms-5" th:object="${userView}">
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">ID</label>
+                    <input readonly type="text" class="form-control" th:field="*{id}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Hình ảnh</label>
+                    <img class="p-2 d-block mb-3" th:src="@{'/public/img/user/' + *{image}}" alt="User image" style="width: 220px; height: 220px; border: 1px solid rgb(0 0 0 / 21%);">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Tên đăng nhập</label>
+                    <input readonly type="text" class="form-control" th:field="*{username}">
+                </div>
+                <div hidden class="mb-3">
+                    <label class="form-label text-success fw-bold">Mật khẩu</label>
+                    <input type="password" class="form-control" th:field="*{password}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Họ tên</label>
+                    <input readonly type="text" class="form-control" th:field="*{fullName}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Số điện thoại</label>
+                    <input readonly type="text" class="form-control" th:field="*{phoneNumber}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Email</label>
+                    <input readonly type="email" class="form-control" th:field="*{email}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Địa chỉ</label>
+                    <input readonly type="text" class="form-control" th:field="*{address}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Point</label>
+                    <input readonly type="text" class="form-control" th:field="*{point}">
+                </div>
+                <div hidden class="mb-3">
+                    <label class="form-label text-success fw-bold">Status</label>
+                    <input readonly type="text" class="form-control" th:field="*{status}">
+                </div>
+                <div hidden class="mb-3">
+                    <label class="form-label text-success fw-bold">Role</label>
+                    <input readonly type="text" class="form-control" th:field="*{role}">
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<!--    JS-->
+<div th:insert="~{template.html::script-js}"></div>
+</body>
+</html>

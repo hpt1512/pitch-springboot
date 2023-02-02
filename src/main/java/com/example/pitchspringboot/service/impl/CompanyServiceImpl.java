@@ -50,6 +50,9 @@ public class CompanyServiceImpl implements IBaseService<Company> {
     public Company findCompanyByUser(User user) {
         return companyRepository.findCompaniesByUser(user);
     }
+    public List<Company> findCompanyListByUser(Integer id) {
+        return companyRepository.findCompanyListByUser(id);
+    }
     public Integer countAllCompany() {
         return companyRepository.countAllCompany();
     }

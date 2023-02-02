@@ -35,7 +35,7 @@
             <form class="col-8 ms-5 mt-3" th:action="@{/owner/myCompany/editInfo}" method="post" th:object="${company}">
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">ID</label>
-                    <input type="text" class="form-control" th:field="*{id}">
+                    <input readonly type="text" class="form-control" th:field="*{id}">
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Tên sân</label>

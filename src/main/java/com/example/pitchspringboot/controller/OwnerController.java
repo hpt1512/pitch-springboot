@@ -8,13 +8,16 @@ import com.example.pitchspringboot.service.impl.BookingServiceImpl;
 import com.example.pitchspringboot.service.impl.CompanyServiceImpl;
 import com.example.pitchspringboot.service.impl.PitchServiceImpl;
 import com.example.pitchspringboot.service.impl.UserServiceImpl;
+import com.example.pitchspringboot.validate.PitchValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.*;
 
 @Controller
@@ -32,6 +35,8 @@ public class OwnerController {
     PitchServiceImpl pitchService;
     @Autowired
     IBaseService<Location> locationService;
+    @Autowired
+    PitchValidate pitchValidate;
     private List<String> timeList = Arrays.asList("08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
 
 
@@ -125,6 +130,8 @@ public class OwnerController {
         if ("".equals(pitchFindId) && "".equals(datePlay) && "".equals(timePlay)) {
             return "redirect:/owner/booking";
         }
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
         List<Booking> bookingList = bookingService.findByPitchDateTimeCustoms(pitchFindId, datePlay, timePlay);
         model.addAttribute("bookingList", bookingList);
         model.addAttribute("timeList", timeList);
@@ -134,6 +141,8 @@ public class OwnerController {
 
     @GetMapping("/booking/viewUser/{id}")
     public String viewUser(@PathVariable("id") Integer id, Model model) {
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
         model.addAttribute("userView", userService.findById(id));
         return "owner/booking/view-user";
     }
@@ -153,7 +162,17 @@ public class OwnerController {
     }
 
     @PostMapping("/myCompany/create")
-    public String doCreatePitch(@ModelAttribute("newPitch") Pitch newPitch, RedirectAttributes redirectAttributes) {
+    public String doCreatePitch(@Valid @ModelAttribute("newPitch") Pitch newPitch, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        pitchValidate.validate(newPitch, bindingResult);
+        if (bindingResult.hasErrors()) {
+            Company company = getMyCompany();
+            model.addAttribute("company", company);
+            model.addAttribute("pitchList", pitchService.findByCompany(company));
+            model.addAttribute("checkBlock", 1);
+            User userSession = (User) session.getAttribute("user");
+            model.addAttribute("user", userSession);
+            return "owner/company/list";
+        }
         pitchService.insert(newPitch);
         redirectAttributes.addFlashAttribute("mess", "Thêm mới sân bóng thành công");
         return "redirect:/owner/myCompany";
@@ -195,7 +214,7 @@ public class OwnerController {
         Date date = new Date();
         Calendar c = Calendar.getInstance();
         c.setTime(date);
-        Integer currentMonth = c.MONTH - 1;
+        Integer currentMonth = c.MONTH;
         Integer currentMonthIncome = 0;
         for (IReportIncomeByMonth ob:reportIncomeList) {
             if (ob.getMonth() == currentMonth) {

@@ -38,7 +38,7 @@ public class BookingValidate implements Validator {
         }
         else {
             if(date.after(booking.getDate())) {
-                errors.rejectValue("date","date.validate.start",null,"Ngày đặt sân không được trước hoặc trong ngày hiện tại");
+                errors.rejectValue("date","date.validate.start",null,"Ngày đặt sân không được trước ngày hiện tại");
             }
             if(booking.getDate().after(dateEnd)) {
                 errors.rejectValue("date","date.validate.end",null,"Ngày đặt sân không được cách ngày hiện tại quá 1 tuần");

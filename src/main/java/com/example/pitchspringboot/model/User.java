@@ -2,6 +2,7 @@ package com.example.pitchspringboot.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity(name = "user")
 public class User {
@@ -11,8 +12,10 @@ public class User {
     private Integer id;
     @Column(name = "username", nullable = false, columnDefinition = "varchar(15)")
     @NotBlank(message = "{notempty}")
+    @Size(min = 5, max = 15, message = "{username.size}")
     private String username;
     @Column(name = "`password`", nullable = false, columnDefinition = "varchar(45)")
+    @Size(min = 5, message = "{password.size}")
     private String password;
     @Column(name = "full_name", nullable = false, columnDefinition = "varchar(100)")
     @NotBlank(message = "{notempty}")
@@ -23,8 +26,10 @@ public class User {
     @NotBlank(message = "{notempty}")
     private String phoneNumber;
     @Column(name = "email", columnDefinition = "varchar(100)")
+    @NotBlank(message = "{notempty}")
     private String email;
     @Column(name = "address", columnDefinition = "varchar(100)")
+    @NotBlank(message = "{notempty}")
     private String address;
     @Column(name = "`point`", columnDefinition = "int default 0")
     private Integer point;

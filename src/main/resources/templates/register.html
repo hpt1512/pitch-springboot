@@ -21,6 +21,7 @@
             <div class="mb-3">
                 <label class="form-label text-success fw-bold">Mật khẩu</label>
                 <input type="password" class="form-control" th:field="*{password}">
+                <span class="text-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
             </div>
             <div class="mb-3">
                 <label class="form-label text-success fw-bold">Nhập lại mật khẩu</label>
@@ -44,10 +45,12 @@
             <div class="mb-3">
                 <label class="form-label text-success fw-bold">Email</label>
                 <input type="text" class="form-control" th:field="*{email}">
+                <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
             </div>
             <div class="mb-3">
                 <label class="form-label text-success fw-bold">Địa chỉ</label>
                 <input type="text" class="form-control" th:field="*{address}">
+                <span class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
             </div>
             <div hidden class="mb-3">
                 <label class="form-label text-success fw-bold">Point</label>

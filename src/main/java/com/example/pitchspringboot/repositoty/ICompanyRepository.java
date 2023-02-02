@@ -12,6 +12,8 @@ public interface ICompanyRepository extends JpaRepository<Company, Integer> {
     List<Company> findCompaniesByNameContaining(String name);
     List<Company> findCompaniesByLocation(Location location);
     Company findCompaniesByUser(User user);
+    @Query(value = "select * from company where id_user = ?;", nativeQuery = true)
+    List<Company> findCompanyListByUser(Integer id);
     @Query(value = "select count(id) from company;", nativeQuery = true)
     Integer countAllCompany();
     @Query(value = "select * from v_report_company order by amount desc;", nativeQuery = true)

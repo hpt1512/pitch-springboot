@@ -11,10 +11,12 @@ import com.example.pitchspringboot.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -79,7 +81,12 @@ public class UserController {
     }
 
     @PostMapping("/comment")
-    public String comment(@ModelAttribute("comment")Comment comment) {
+    public String comment(@ModelAttribute("comment")Comment comment, RedirectAttributes redirectAttributes) {
+       if ("".equals(comment.getContent().trim())) {
+           redirectAttributes.addFlashAttribute("errCmt","Viết đánh giá vào ô trên");
+           String id = String.valueOf(comment.getCompany().getId());
+           return "redirect:/company/" + id + "/pitch";
+       }
         commentService.insert(comment);
         String id = String.valueOf(comment.getCompany().getId());
         return "redirect:/company/" + id + "/pitch";
@@ -99,5 +106,13 @@ public class UserController {
         Comment comment = commentService.findById(comment_id);
         String idCompany = String.valueOf(comment.getCompany().getId());
         return "redirect:/company/" + idCompany + "/pitch";
+    }
+
+    @GetMapping("/view-user/{id}")
+    public String viewUser(Model model, @PathVariable("id") Integer id) {
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
+        model.addAttribute("userView", userService.findById(id));
+        return "user/view-user";
     }
 }

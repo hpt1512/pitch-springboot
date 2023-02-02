@@ -41,7 +41,7 @@
                     </ul>
                     <ul class="navbar-nav mb-2 mb-lg-0 fw-bold">
                         <li class="nav-item px-3">
-                            <div class="nav-link active text-success header__option__btn" id="header__option__btn">
+                            <div th:if="${user != null}" class="nav-link active text-success header__option__btn" id="header__option__btn">
                                 <i class="bi bi-list-ul text-success fw-bold fs-5"></i>
                                 <ul class="list-group header__option__list" id="header__option__list">
                                     <a class="text-decoration-none" href="/user/info" th:if="${user != null}"><li class="list-group-item bg-success">Thông tin cá nhân</li></a>
