@@ -8,6 +8,7 @@ import com.example.pitchspringboot.service.IBaseService;
 import com.example.pitchspringboot.service.impl.BookingServiceImpl;
 import com.example.pitchspringboot.service.impl.CommentServiceImpl;
 import com.example.pitchspringboot.service.impl.UserServiceImpl;
+import com.example.pitchspringboot.validate.UserEditValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,8 @@ public class UserController {
     BookingServiceImpl bookingService;
     @Autowired
     CommentServiceImpl commentService;
+    @Autowired
+    UserEditValidate userEditValidate;
     @GetMapping("/myBooking")
     public String myBooking(Model model) {
         User userSession = (User) session.getAttribute("user");
@@ -58,8 +61,14 @@ public class UserController {
     }
 
     @PostMapping("/edit")
-    public String updateInfo(Model model, @ModelAttribute("user") User user) {
+    public String updateInfo(Model model, @Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
         User userSession = (User) session.getAttribute("user");
+
+        userEditValidate.validate(user, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("user", userSession);
+            return "user/info";
+        }
 
         userService.update(user);
 
@@ -101,7 +110,13 @@ public class UserController {
     }
 
     @PostMapping("/comment/update")
-    public String updateComment(@RequestParam Integer comment_id, @RequestParam String comment_content) {
+    public String updateComment(@RequestParam Integer comment_id, @RequestParam String comment_content, RedirectAttributes redirectAttributes) {
+        if ("".equals(comment_content.trim())) {
+            redirectAttributes.addFlashAttribute("errCmt","Bạn chưa viết đánh giá");
+            Comment comment = commentService.findById(comment_id);
+            String id = String.valueOf(comment.getCompany().getId());
+            return "redirect:/company/" + id + "/pitch";
+        }
         commentService.updateContentById(comment_content, comment_id);
         Comment comment = commentService.findById(comment_id);
         String idCompany = String.valueOf(comment.getCompany().getId());

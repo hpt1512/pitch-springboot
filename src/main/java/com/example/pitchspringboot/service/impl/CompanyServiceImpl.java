@@ -5,6 +5,7 @@ import com.example.pitchspringboot.model.Location;
 import com.example.pitchspringboot.model.User;
 import com.example.pitchspringboot.repositoty.ICompanyRepository;
 import com.example.pitchspringboot.repositoty.IRepostCompany;
+import com.example.pitchspringboot.repositoty.ITopCompany;
 import com.example.pitchspringboot.service.IBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,5 +59,8 @@ public class CompanyServiceImpl implements IBaseService<Company> {
     }
     public List<IRepostCompany> getReportCompany() {
         return companyRepository.getReportCompany();
+    }
+    public List<ITopCompany> getTopCompany() {
+        return companyRepository.getTopCompany();
     }
 }

@@ -8,6 +8,7 @@ import com.example.pitchspringboot.service.impl.BookingServiceImpl;
 import com.example.pitchspringboot.service.impl.CompanyServiceImpl;
 import com.example.pitchspringboot.service.impl.PitchServiceImpl;
 import com.example.pitchspringboot.service.impl.UserServiceImpl;
+import com.example.pitchspringboot.validate.CompanyEditValidate;
 import com.example.pitchspringboot.validate.PitchValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,8 @@ public class OwnerController {
     IBaseService<Location> locationService;
     @Autowired
     PitchValidate pitchValidate;
+    @Autowired
+    CompanyEditValidate companyEditValidate;
     private List<String> timeList = Arrays.asList("08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
 
 
@@ -155,7 +158,14 @@ public class OwnerController {
     }
 
     @PostMapping("/myCompany/editInfo")
-    public String doEditCompany(@ModelAttribute("company") Company company, RedirectAttributes redirectAttributes) {
+    public String doEditCompany(@Valid @ModelAttribute("company") Company company, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        companyEditValidate.validate(company, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("locationList", locationService.findAll());
+            User userSession = (User) session.getAttribute("user");
+            model.addAttribute("user", userSession);
+            return "owner/company/info";
+        }
         companyService.update(company);
         redirectAttributes.addFlashAttribute("messInfo", "Đã cập nhật thông tin sân bóng");
         return "redirect:/owner/myCompany";
@@ -189,7 +199,15 @@ public class OwnerController {
     }
 
     @PostMapping("/myCompany/doEdit")
-    public String đoEitPitch(@ModelAttribute("pitch") Pitch pitch, RedirectAttributes redirectAttributes) {
+    public String đoEitPitch(@Valid @ModelAttribute("pitch") Pitch pitch, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        pitchValidate.validate(pitch, bindingResult);
+        if (bindingResult.hasErrors()) {
+            Company company = getMyCompany();
+            model.addAttribute("company", company);
+            User userSession = (User) session.getAttribute("user");
+            model.addAttribute("user", userSession);
+            return "owner/company/edit";
+        }
         pitchService.update(pitch);
         redirectAttributes.addFlashAttribute("mess", "Cập nhật sân bóng thành công");
         return "redirect:/owner/myCompany";
@@ -198,6 +216,13 @@ public class OwnerController {
     @GetMapping("/myCompany/delete")
     public String deletePitch(Model model, @RequestParam("id") Integer id, RedirectAttributes redirectAttributes) {
         Pitch pitch = pitchService.findById(id);
+
+        List<Booking> bookingList = bookingService.findByPitch(pitch);
+        if (bookingList.size() != 0) {
+            for (Booking booking : bookingList) {
+                bookingService.delete(booking);
+            }
+        }
         pitchService.delete(pitch);
         redirectAttributes.addFlashAttribute("mess", "Xoá sân bóng thành công");
         return "redirect:/owner/myCompany";

@@ -18,4 +18,6 @@ public interface ICompanyRepository extends JpaRepository<Company, Integer> {
     Integer countAllCompany();
     @Query(value = "select * from v_report_company order by amount desc;", nativeQuery = true)
     List<IRepostCompany> getReportCompany();
+    @Query(value = "select * from v_top_company;", nativeQuery = true)
+    List<ITopCompany> getTopCompany();
 }

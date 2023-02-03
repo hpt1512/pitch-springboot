@@ -2,6 +2,7 @@ package com.example.pitchspringboot.service.impl;
 
 import com.example.pitchspringboot.model.Comment;
 import com.example.pitchspringboot.model.Company;
+import com.example.pitchspringboot.model.User;
 import com.example.pitchspringboot.repositoty.ICommentRepository;
 import com.example.pitchspringboot.service.IBaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +51,8 @@ public class CommentServiceImpl implements IBaseService<Comment> {
     }
     public void updateContentById(String content, Integer id) {
         commentRepository.updateContentById(content, id);
+    }
+    public List<Comment> findByUser(User user) {
+        return commentRepository.findCommentByUser(user);
     }
 }

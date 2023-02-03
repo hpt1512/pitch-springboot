@@ -69,4 +69,7 @@ public class BookingServiceImpl implements IBaseService<Booking> {
     public List<IReportIncomeByMonth> reportIncomeByMonth(Integer id) {
         return bookingRepository.reportIncomeByMonth(id);
     }
+    public List<Booking> findByPitch(Pitch pitch) {
+        return bookingRepository.findBookingByPitch(pitch);
+    }
 }

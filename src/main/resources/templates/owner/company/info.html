@@ -40,6 +40,7 @@
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Tên sân</label>
                     <input type="text" class="form-control" th:field="*{name}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Hình ảnh</label>
@@ -49,14 +50,17 @@
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Số điện thoại</label>
                     <input type="text" class="form-control" th:field="*{phoneNumber}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Email</label>
                     <input type="text" class="form-control" th:field="*{email}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Địa chỉ</label>
                     <input type="text" class="form-control" th:field="*{address}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Map URL</label>
@@ -72,6 +76,7 @@
                 <div hidden class="mb-3">
                     <label class="form-label text-success fw-bold">Chủ sân</label>
                     <input type="text" class="form-control" th:field="*{user}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('user')}" th:errors="*{user}"></span>
                 </div>
                 <button type="submit" class="btn btn-primary mt-2">Cập nhật</button>
             </form>

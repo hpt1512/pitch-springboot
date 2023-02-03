@@ -12,7 +12,60 @@
     <div th:insert="~{template.html::header}"></div>
     <!--    Slider-->
     <div th:insert="~{template.html::slider}"></div>
+
+<!--    <table class="table table-striped">-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th scope="col">STT</th>-->
+<!--            <th scope="col">ID</th>-->
+<!--            <th scope="col">Name</th>-->
+<!--            <th scope="col">Count Booking</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        <tr class="align-middle" th:each="ob, iter: ${topCompanies}">-->
+<!--            <th scope="row" th:text="${iter.count}"></th>-->
+<!--            <td th:text="${ob.getId()}"></td>-->
+<!--            <td th:text="${ob.getName()}"></td>-->
+<!--            <td th:text="${ob.getCountBooking()}"></td>-->
+<!--        </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+
+    <h3 class="text-secondary my-3 mx-5 p-3">Sân bóng phổ biến</h3>
+    <ul class="list-unstyled row mx-5 justify-content-center">
+        <li class="py-2 my-2 bg-light mx-2 rounded-3" style="width: 22%" th:each="company, iter: ${companyListTop}" th:object="${company}">
+            <img class="p-2 w-100" th:src="@{'/public/img/company/' + *{image}}" alt="" style="border-radius: 20px; width: 280px; height: 220px">
+            <div class="ms-3 w-100">
+                <span class="d-block my-3 text-danger fw-bold fs-5" th:text="*{name}"></span>
+
+
+                <span class="d-block  my-3 text-secondary" style="font-weight: 500">
+                                <i class="bi bi-geo-alt-fill me-2"></i>
+                                <span th:text="${company.location.name}"></span>
+                                <span>(</span>
+                                <span th:text="*{address}"></span>
+                                <span>)</span>
+                            </span>
+
+                <span class="d-block mb-5 text-success fw-bold">
+                                <i class="bi bi-telephone-fill me-2"></i>
+                                <span th:text="*{phoneNumber}"></span>
+                            </span>
+
+                <a th:href="@{/company/{id}/pitch(id = *{id})}">
+                    <button type="button" class="btn btn-success me-3 pe-3">
+                        <i class="bi bi-arrow-right me-2"></i>
+                        Chi tiết
+                    </button>
+                </a>
+            </div>
+        </li>
+
+    </ul>
 </div>
+<!--    Footer-->
+<div th:insert="~{template.html::footer}"></div>
 <!--    JS-->
 <div th:insert="~{template.html::script-js}"></div>
 </body>

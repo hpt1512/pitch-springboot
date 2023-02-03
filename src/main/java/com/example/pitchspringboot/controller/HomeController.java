@@ -1,9 +1,12 @@
 package com.example.pitchspringboot.controller;
 
+import com.example.pitchspringboot.model.Company;
 import com.example.pitchspringboot.model.Login;
 import com.example.pitchspringboot.model.Role;
 import com.example.pitchspringboot.model.User;
+import com.example.pitchspringboot.repositoty.ITopCompany;
 import com.example.pitchspringboot.service.IBaseService;
+import com.example.pitchspringboot.service.impl.CompanyServiceImpl;
 import com.example.pitchspringboot.validate.UserValidate;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,10 +35,20 @@ public class HomeController {
     IBaseService<Role> roleService;
     @Autowired
     UserValidate userValidate;
+    @Autowired
+    CompanyServiceImpl companyService;
     @GetMapping("/")
     public String home(Model model) {
         User userSession = (User) session.getAttribute("user");
         model.addAttribute("user", userSession);
+        List<ITopCompany> topCompanies = companyService.getTopCompany();
+        model.addAttribute("topCompanies", topCompanies);
+        List<Company> companyListTop = new ArrayList<>();
+        for (ITopCompany company : topCompanies) {
+            System.out.println(company.getId());
+            companyListTop.add(companyService.findById(company.getId()));
+        }
+        model.addAttribute("companyListTop", companyListTop);
         return "home";
     }
 

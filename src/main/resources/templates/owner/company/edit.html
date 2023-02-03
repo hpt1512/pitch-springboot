@@ -66,14 +66,17 @@
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Tên sân</label>
                     <input type="text" class="form-control" th:field="*{name}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Số người</label>
                     <input type="text" class="form-control" th:field="*{peopleMax}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('peopleMax')}" th:errors="*{peopleMax}"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Giá</label>
                     <input type="text" class="form-control" th:field="*{price}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
                 </div>
                 <div hidden class="mb-3">
                     <label class="form-label text-success fw-bold">Trạng thái</label>

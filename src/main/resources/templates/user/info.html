@@ -45,18 +45,22 @@
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Họ tên</label>
                     <input type="text" class="form-control" th:field="*{fullName}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Số điện thoại</label>
                     <input type="text" class="form-control" th:field="*{phoneNumber}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Email</label>
                     <input type="email" class="form-control" th:field="*{email}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Địa chỉ</label>
                     <input type="text" class="form-control" th:field="*{address}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></span>
                 </div>
                 <div class="mb-3">
                     <label class="form-label text-success fw-bold">Point</label>

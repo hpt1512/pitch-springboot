@@ -33,4 +33,5 @@ public interface IBookingRepository extends JpaRepository<Booking, Integer> {
     List<Booking> findBookingByUserAndStatus(User user, Integer status);
     @Query(value = "select id, month, year, sum from v_report_income where id = ?;", nativeQuery = true)
     List<IReportIncomeByMonth> reportIncomeByMonth(Integer id);
+    List<Booking> findBookingByPitch(Pitch pitch);
 }
