@@ -93,6 +93,7 @@
                              alt=""/>
                         <div class="ms-3 w-100">
                             <a th:href="@{/user/view-user/{id}(id=*{user.id})}"><h6 class="d-inline-block me-2" th:text="*{user.fullName}"></h6></a>
+                            <span style="font-size: 12px" class="d-inline-block bg-secondary rounded-pill px-3 py-1 me-2 text-white fw-bold" th:if="${commentItem.user.id == company.user.id}">Chủ sân</span>
                             <span style="font-size: 90%; opacity: 80%" th:text="*{dateTimeCreated}"></span>
 <!--                            <span class="ms-3" style="font-size: 90%; opacity: 80%" th:text="${iter.index}"></span>-->
                             <span class="d-block cmt-content" th:text="*{content}"></span>
