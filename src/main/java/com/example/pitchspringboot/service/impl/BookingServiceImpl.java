@@ -61,8 +61,8 @@ public class BookingServiceImpl implements IBaseService<Booking> {
     public void confirmPay(Integer id) {
         bookingRepository.confirmPay(id);
     }
-    public List<Booking> findByPitchDateTimeCustoms(String pitchFindId, String datefind, String timeFind) {
-        return bookingRepository.findByPitchDateTimeCustoms(pitchFindId, datefind, timeFind);
+    public List<Booking> findByPitchDateTimeCustoms(String pitchFindId, String datefind, String timeFind, String statusFind) {
+        return bookingRepository.findByPitchDateTimeCustoms(pitchFindId, datefind, timeFind, statusFind);
     }
     public List<Booking> findByUserAndStatus(User user, Integer status) {
         return bookingRepository.findBookingByUserAndStatus(user, status);

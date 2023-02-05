@@ -332,13 +332,14 @@ public class AdminController {
     public String findBooking(@RequestParam("pitchName") String pitchFindId,
                               @RequestParam("datePlay") String datePlay,
                               @RequestParam("timePlay") String timePlay,
+                              @RequestParam("statusFind") String statusFind,
                               Model model) {
         User userSession = (User) session.getAttribute("user");
         model.addAttribute("user", userSession);
-        if ("".equals(pitchFindId) && "".equals(datePlay) && "".equals(timePlay)) {
+        if ("".equals(pitchFindId) && "".equals(datePlay) && "".equals(timePlay) && "".equals(statusFind)) {
             return "redirect:/admin/booking";
         }
-        List<Booking> bookingList = bookingService.findByPitchDateTimeCustoms(pitchFindId, datePlay, timePlay);
+        List<Booking> bookingList = bookingService.findByPitchDateTimeCustoms(pitchFindId, datePlay, timePlay, statusFind);
         model.addAttribute("bookingList", bookingList);
         model.addAttribute("timeList", timeList);
         model.addAttribute("pitchList", pitchService.findAll());

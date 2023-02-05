@@ -21,12 +21,28 @@
             </div>
         </div>
         <div class="col-10">
-            <div class="btn-group my-3 d-flex justify-content-between" role="group" aria-label="Basic mixed styles example">
-                <div>
-                    <h4 class="text-danger">DANH SÁCH ĐƠN ĐẶT SÂN CỦA BẠN</h4>
-                </div>
-                <form class="d-flex" method="post" action="/admin-company?action=find">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="input_find">
+            <div>
+                <h4 class="text-danger">DANH SÁCH ĐƠN ĐẶT SÂN CỦA BẠN</h4>
+            </div>
+            <div class="btn-group my-3 d-flex justify-content-end" role="group" aria-label="Basic mixed styles example">
+
+                <form class="d-flex" method="get" th:action="@{/user/mybooking/find}">
+                    <select hidden class="form-select me-2" aria-label="Default select example" name="pitchName">
+                        <option value="">----- Chọn sân -----</option>
+                        <option th:each="pitch : ${pitchList}" th:value="${pitch.id}" th:text="${pitch.name}"></option>
+                    </select>
+                    <input type="date" class="form-control me-2" name="datePlay">
+                    <select class="form-select me-2" aria-label="Default select example" name="timePlay">
+                        <option value="">----- Chọn giờ -----</option>
+                        <option th:each="time : ${timeList}" th:value="${time}" th:text="${time}"></option>
+                    </select>
+                    <select class="form-select me-2" aria-label="Default select example" name="statusFind">
+                        <option value="">----- Chọn trạng thái -----</option>
+                        <option value="0">Đang chờ</option>
+                        <option value="1">Đã xác nhận</option>
+                        <option value="2">Đã từ chối</option>
+                        <option value="3">Đã thanh toán</option>
+                    </select>
                     <button class="btn btn-success w-50" type="submit">Tìm kiếm</button>
                 </form>
             </div>

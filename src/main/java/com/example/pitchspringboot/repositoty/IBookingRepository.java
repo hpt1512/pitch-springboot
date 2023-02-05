@@ -17,8 +17,8 @@ import java.util.List;
 public interface IBookingRepository extends JpaRepository<Booking, Integer> {
     List<Booking> findBookingByUser(User user);
     List<Booking> findBookingByPitchAndDateAndTime(Pitch pitch, Date date, String time);
-    @Query(value="select * from booking where id_pitch like concat(\"%\" , ? , \"%\") and date like concat(\"%\" , ? , \"%\") and time like concat(\"%\" , ? , \"%\");", nativeQuery=true)
-    List<Booking> findByPitchDateTimeCustoms(String pitchFindId, String datefind, String timeFind);
+    @Query(value="select * from booking where id_pitch like concat(\"%\" , ? , \"%\") and date like concat(\"%\" , ? , \"%\") and time like concat(\"%\" , ? , \"%\") and status like concat(\"%\" , ? , \"%\");", nativeQuery=true)
+    List<Booking> findByPitchDateTimeCustoms(String pitchFindId, String datefind, String timeFind, String statusFind);
     @Modifying
     @Transactional
     @Query(value="update booking set status = 1 where id = ?;", nativeQuery=true)

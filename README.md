@@ -17,7 +17,7 @@ UPDATE
 
 - update role user khi update company (OK)
 
-- Xoá khoá ngoại (OK)
+- Xoá khoá ngoại (OK) 
 - UTF-8
 - update image
 - update booking (OK)

@@ -40,6 +40,13 @@
                         <option value="">----- Chọn giờ -----</option>
                         <option th:each="time : ${timeList}" th:value="${time}" th:text="${time}"></option>
                     </select>
+                    <select class="form-select me-2" aria-label="Default select example" name="statusFind">
+                        <option value="">----- Chọn trạng thái -----</option>
+                        <option value="0">Đang chờ</option>
+                        <option value="1">Đã xác nhận</option>
+                        <option value="2">Đã từ chối</option>
+                        <option value="3">Đã thanh toán</option>
+                    </select>
                     <button class="btn btn-success w-50" type="submit">Tìm kiếm</button>
                 </form>
             </div>

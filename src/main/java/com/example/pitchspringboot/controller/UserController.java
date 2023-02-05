@@ -16,6 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,6 +34,7 @@ public class UserController {
     CommentServiceImpl commentService;
     @Autowired
     UserEditValidate userEditValidate;
+    private List<String> timeList = Arrays.asList("08:00","09:00","10:00","11:00","12:00","13:00","14:00","15:00","16:00","17:00","18:00","19:00","20:00","21:00","22:00");
     @GetMapping("/myBooking")
     public String myBooking(Model model) {
         User userSession = (User) session.getAttribute("user");
@@ -49,6 +52,29 @@ public class UserController {
         bookingService.delete(booking);
         redirectAttributes.addFlashAttribute("mess", "Đã huỷ đơn đặt sân");
         return "redirect:/user/myBooking";
+    }
+
+    @GetMapping("/mybooking/find")
+    public String findBooking(@RequestParam("pitchName") String pitchFindId,
+                              @RequestParam("datePlay") String datePlay,
+                              @RequestParam("timePlay") String timePlay,
+                              @RequestParam("statusFind") String statusFind,
+                              Model model) {
+        if ("".equals(pitchFindId) && "".equals(datePlay) && "".equals(timePlay) && "".equals(statusFind)) {
+            return "redirect:/user/myBooking";
+        }
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
+        List<Booking> bookings = bookingService.findByPitchDateTimeCustoms(pitchFindId, datePlay, timePlay, statusFind);
+        List<Booking> bookingList = new ArrayList<>();
+        for (Booking booking : bookings) {
+            if (booking.getUser().getId() == userSession.getId()) {
+                bookingList.add(booking);
+            }
+        }
+        model.addAttribute("bookingList", bookingList);
+        model.addAttribute("timeList", timeList);
+        return "user/mybooking";
     }
 
     @GetMapping("/info")

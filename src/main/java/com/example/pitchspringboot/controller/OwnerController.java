@@ -129,13 +129,20 @@ public class OwnerController {
     public String findBooking(@RequestParam("pitchName") String pitchFindId,
                               @RequestParam("datePlay") String datePlay,
                               @RequestParam("timePlay") String timePlay,
+                              @RequestParam("statusFind") String statusFind,
                               Model model) {
-        if ("".equals(pitchFindId) && "".equals(datePlay) && "".equals(timePlay)) {
+        if ("".equals(pitchFindId) && "".equals(datePlay) && "".equals(timePlay) && "".equals(statusFind)) {
             return "redirect:/owner/booking";
         }
         User userSession = (User) session.getAttribute("user");
         model.addAttribute("user", userSession);
-        List<Booking> bookingList = bookingService.findByPitchDateTimeCustoms(pitchFindId, datePlay, timePlay);
+        List<Booking> bookings = bookingService.findByPitchDateTimeCustoms(pitchFindId, datePlay, timePlay, statusFind);
+        List<Booking> bookingList = new ArrayList<>();
+        for (Booking booking : bookings) {
+            if (booking.getPitch().getCompany().getId() == getMyCompany().getId()) {
+                bookingList.add(booking);
+            }
+        }
         model.addAttribute("bookingList", bookingList);
         model.addAttribute("timeList", timeList);
         model.addAttribute("pitchList", pitchService.findByCompany(getMyCompany()));
