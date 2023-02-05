@@ -1,6 +1,6 @@
 
 UPDATE
-- đổi mật khẩu
+- đổi mật khẩu (OK)
 - validate thêm mới công ty (Kiểm tra chủ sân đã có sân bóng chưa) (OK)
 
 - register (OK)
@@ -20,5 +20,5 @@ UPDATE
 - Xoá khoá ngoại (OK)
 - UTF-8
 - update image
-- update booking
+- update booking (OK)
 

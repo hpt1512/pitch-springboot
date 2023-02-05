@@ -13,24 +13,24 @@
     <!--    Slider-->
     <div th:insert="~{template.html::slider}"></div>
 
-<!--    <table class="table table-striped">-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <th scope="col">STT</th>-->
-<!--            <th scope="col">ID</th>-->
-<!--            <th scope="col">Name</th>-->
-<!--            <th scope="col">Count Booking</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--        <tr class="align-middle" th:each="ob, iter: ${topCompanies}">-->
-<!--            <th scope="row" th:text="${iter.count}"></th>-->
-<!--            <td th:text="${ob.getId()}"></td>-->
-<!--            <td th:text="${ob.getName()}"></td>-->
-<!--            <td th:text="${ob.getCountBooking()}"></td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
+    <table hidden class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">STT</th>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Count Booking</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="align-middle" th:each="ob, iter: ${topCompanies}">
+            <th scope="row" th:text="${iter.count}"></th>
+            <td th:text="${ob.getId()}"></td>
+            <td th:text="${ob.getName()}"></td>
+            <td th:text="${ob.getCountBooking()}"></td>
+        </tr>
+        </tbody>
+    </table>
 
     <h3 class="text-secondary my-3 mx-5 p-3">Sân bóng phổ biến</h3>
     <ul class="list-unstyled row mx-5 justify-content-center">

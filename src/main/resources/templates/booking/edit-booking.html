@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>USER - EDIT BOOKING</title>
+    <!--    Link-->
+    <div th:insert="~{template.html::link}"></div>
+</head>
+<body>
+<div class="app">
+    <!--    Header-->
+    <div th:insert="~{template.html::header}"></div>
+    <!-- Content -->
+    <div class="content row my-3 mx-3">
+        <div class="col-2">
+            <!--    Menu-->
+            <div>
+                <ul class="list-group admin__menu__left">
+                    <a class="text-decoration-none" href=""><li class="list-group-item bg-success text-white fw-bold py-3">ĐƠN ĐẶT SÂN</li></a>
+                </ul>
+            </div>
+        </div>
+        <div class="col-10">
+            <div class="btn-group my-3 d-flex justify-content-between" role="group" aria-label="Basic mixed styles example">
+                <div>
+                    <h4 class="text-danger">CẬP NHẬT ĐƠN ĐẶT SÂN</h4>
+                </div>
+            </div>
+            <form th:action="@{/booking/update}" method="post" th:object="${booking}">
+                <div hidden class="mb-3">
+                    <label class="form-label text-success fw-bold">ID Booking</label>
+                    <input readonly type="text" class="form-control" th:field="*{id}">
+                </div>
+                <div hidden class="mb-3">
+                    <label class="form-label text-success fw-bold">ID Pitch</label>
+                    <input readonly type="text" class="form-control" th:field="*{pitch}">
+                </div>
+                <div hidden class="mb-3">
+                    <label class="form-label text-success fw-bold">ID User</label>
+                    <input readonly type="text" class="form-control" th:field="*{user}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Ngày</label>
+                    <input type="date" class="form-control" th:field="*{date}">
+                    <span class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Khung giờ</label>
+                    <select class="form-select" aria-label="Default select example" th:field="*{time}">
+                        <option th:each="timeItem: ${timeList}" th:value="${timeItem}" th:text="${timeItem}" th:id="time"></option>
+                    </select>
+                    <span class="text-danger" th:if="${#fields.hasErrors('time')}" th:errors="*{time}"></span>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Ghi chú</label>
+                    <input type="text" class="form-control" th:field="*{note}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label text-success fw-bold">Giá</label>
+                    <input hidden type="text" class="form-control" th:field="*{price}">
+                    <span class="text-danger fw-bold fs-5 px-5" th:text="*{price + ' VNĐ'}"></span>
+                </div>
+                <span th:if="*{voucher.id == 2}" class="text-danger d-block mb-3">Đã áp dụng mã giảm giá 50.000đ</span>
+                <div hidden class="mb-3">
+                    <label class="form-label text-success fw-bold">Voucher</label>
+                    <input readonly type="text" class="form-control" th:field="*{voucher}">
+                </div>
+                <div hidden class="mb-3">
+                    <label class="form-label text-success fw-bold">Status</label>
+                    <input type="text" class="form-control" th:field="*{status}">
+                </div>
+                <div hidden class="mb-3">
+                    <label class="form-label text-success fw-bold">DateTmeCreated</label>
+                    <input type="text" class="form-control" th:field="*{dateTimeCreated}">
+                </div>
+                <button type="submit" class="btn btn-primary">Cập nhật</button>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="/user/booking/delete" method="get">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">HUỶ ĐƠN ĐẶT SÂN</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input name="id" id="deleteId" hidden>
+                    <span class="text-danger">Huỷ đơn đặt sân ID :  </span><span id="deleteName"></span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">OK</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!--    JS-->
+<div th:insert="~{template.html::script-js}"></div>
+<script>
+    function infoDelete(id) {
+        document.getElementById("deleteName").innerText = id;
+        document.getElementById("deleteId").value = id;
+    }
+</script>
+</body>
+</html>

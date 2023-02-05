@@ -15,13 +15,13 @@ public class Pitch {
     @Column(name = "id")
     private Integer id;
     @Column(name = "`name`", nullable = false, columnDefinition = "varchar(45)")
-    @NotBlank(message = "{notempty}")
+    @NotBlank(message = "Không được để trống")
     private String name;
     @Column(name = "people_max", nullable = false)
-    @NotNull(message = "{notempty}")
+    @NotNull(message = "Không được để trống")
     private Integer peopleMax;
     @Column(name = "price", nullable = false)
-    @NotNull(message = "{notempty}")
+    @NotNull(message = "Không được để trống")
     @Min(value = 0, message = "Giá sân không được bé hơn 0")
     @Max(value = 500000, message = "Giá sân không được lớn hơn 500000")
     private Integer price;

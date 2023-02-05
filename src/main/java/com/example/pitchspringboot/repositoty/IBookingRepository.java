@@ -3,6 +3,7 @@ package com.example.pitchspringboot.repositoty;
 import com.example.pitchspringboot.model.Booking;
 import com.example.pitchspringboot.model.Pitch;
 import com.example.pitchspringboot.model.User;
+import com.example.pitchspringboot.model.Voucher;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -31,6 +32,7 @@ public interface IBookingRepository extends JpaRepository<Booking, Integer> {
     @Query(value="update booking set status = 3 where id = ?;", nativeQuery=true)
     void confirmPay(Integer idBooking);
     List<Booking> findBookingByUserAndStatus(User user, Integer status);
+    List<Booking> findBookingByUserAndStatusAndVoucher(User user, Integer status, Voucher voucher);
     @Query(value = "select id, month, year, sum from v_report_income where id = ?;", nativeQuery = true)
     List<IReportIncomeByMonth> reportIncomeByMonth(Integer id);
     List<Booking> findBookingByPitch(Pitch pitch);

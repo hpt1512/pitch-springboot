@@ -46,7 +46,7 @@
                                 <ul class="list-group header__option__list" id="header__option__list">
                                     <a class="text-decoration-none" href="/user/info" th:if="${user != null}"><li class="list-group-item bg-success">Thông tin cá nhân</li></a>
                                     <a class="text-decoration-none" href="/owner/myCompany" th:if="${user != null && user.role.id == 3}"><li class="list-group-item bg-success">Sân bóng của tôi</li></a>
-                                    <a class="text-decoration-none" href="/user/myBooking" th:if="${user != null && user.role.id == 2}"><li class="list-group-item bg-success">Đơn đặt sân</li></a>
+                                    <a class="text-decoration-none" href="/user/myBooking" th:if="${user != null}"><li class="list-group-item bg-success">Đơn đặt sân</li></a>
                                     <a class="text-decoration-none" href="/admin/user" th:if="${user != null && user.role.id == 1}"><li class="list-group-item bg-success">Quản lý</li></a>
                                     <a class="text-decoration-none" href="/admin/report-user" th:if="${user != null && user.role.id == 1}"><li class="list-group-item bg-success">Thống kê</li></a>
                                 </ul>

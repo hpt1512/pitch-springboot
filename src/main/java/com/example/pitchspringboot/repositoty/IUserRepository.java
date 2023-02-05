@@ -13,7 +13,7 @@ public interface IUserRepository extends JpaRepository<User, Integer> {
     List<User> findUserByUsername(String username);
     @Modifying
     @Transactional
-    @Query(value="update `user` set `password` = ?1 where id = ?2;", nativeQuery=true)
+    @Query(value="update `user` set `password` = ? where id = ?;", nativeQuery=true)
     void changePassword(String newPassword, Integer id);
     @Modifying
     @Transactional

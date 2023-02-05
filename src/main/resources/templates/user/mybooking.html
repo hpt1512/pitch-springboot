@@ -77,7 +77,8 @@
 
                     <td th:text="*{dateTimeCreated}"></td>
 
-                    <td th:if="*{status == 0}" class="px-4">
+                    <td th:if="*{status == 0}" class="px-4 d-flex">
+                        <a th:if="*{status == 0}" th:href="@{/booking/edit-booking/{id}(id=${booking.id})}"><button type="button" class="btn btn-sm btn-warning mx-1">Cập nhật</button></a>
                         <button type="button" th:onclick="infoDelete([[${booking.id}]])"
                                 class="btn btn-sm btn-danger mx-1" data-bs-toggle="modal"
                                 data-bs-target="#exampleModal">

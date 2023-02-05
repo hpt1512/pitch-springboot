@@ -3,6 +3,7 @@ package com.example.pitchspringboot.controller;
 import com.example.pitchspringboot.model.*;
 import com.example.pitchspringboot.service.IBaseService;
 import com.example.pitchspringboot.service.impl.BookingServiceImpl;
+import com.example.pitchspringboot.validate.BookingEditValidate;
 import com.example.pitchspringboot.validate.BookingValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,8 @@ public class BookingController {
 
     @Autowired
     BookingValidate bookingValidate;
+    @Autowired
+    BookingEditValidate bookingEditValidate;
 
     @GetMapping("/create/{id}")
     public String showFormBooking(Model model, @PathVariable int id) {
@@ -64,8 +67,9 @@ public class BookingController {
         Voucher voucher = new Voucher();
 
         if (user.getPoint() % 5 == 0 && user.getPoint() != 0) {
-            if (bookingService.findByUserAndStatus(user, 1).size() == 0 && bookingService.findByUserAndStatus(user, 2).size() == 0
-                    && bookingService.findByUserAndStatus(user, 0).size() == 0) {
+            if (bookingService.findByUserAndStatusAndVoucher(user, 1, voucherService.findById(2)).size() == 0
+                    && bookingService.findByUserAndStatusAndVoucher(user, 2, voucherService.findById(2)).size() == 0
+                    && bookingService.findByUserAndStatusAndVoucher(user, 0, voucherService.findById(2)).size() == 0) {
                 voucher = voucherService.findById(2);
             } else {
                 voucher = voucherService.findById(1);
@@ -107,6 +111,28 @@ public class BookingController {
         }
         bookingService.insert(booking);
         redirectAttributes.addFlashAttribute("mess", "Tạo đơn đặt sân thành công");
+        return "redirect:/user/myBooking";
+    }
+    @GetMapping("/edit-booking/{id}")
+    public String editBooking(@PathVariable("id") Integer id, Model model) {
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
+        Booking booking = bookingService.findById(id);
+        model.addAttribute("booking", booking);
+        model.addAttribute("timeList", timeList);
+        return "booking/edit-booking";
+    }
+    @PostMapping("/update")
+    public String doUpdate(@Valid @ModelAttribute("booking") Booking booking, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model) {
+        bookingEditValidate.validate(booking, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("timeList", timeList);
+            User userSession = (User) session.getAttribute("user");
+            model.addAttribute("user", userSession);
+            return "booking/edit-booking";
+        }
+        bookingService.update(booking);
+        redirectAttributes.addFlashAttribute("mess","Cập nhật đơn đặt sân thành công");
         return "redirect:/user/myBooking";
     }
 }

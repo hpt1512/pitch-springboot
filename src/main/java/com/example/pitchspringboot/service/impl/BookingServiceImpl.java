@@ -3,6 +3,7 @@ package com.example.pitchspringboot.service.impl;
 import com.example.pitchspringboot.model.Booking;
 import com.example.pitchspringboot.model.Pitch;
 import com.example.pitchspringboot.model.User;
+import com.example.pitchspringboot.model.Voucher;
 import com.example.pitchspringboot.repositoty.IBookingRepository;
 import com.example.pitchspringboot.repositoty.IReportIncomeByMonth;
 import com.example.pitchspringboot.service.IBaseService;
@@ -65,6 +66,9 @@ public class BookingServiceImpl implements IBaseService<Booking> {
     }
     public List<Booking> findByUserAndStatus(User user, Integer status) {
         return bookingRepository.findBookingByUserAndStatus(user, status);
+    }
+    public List<Booking> findByUserAndStatusAndVoucher(User user, Integer status, Voucher voucher) {
+        return bookingRepository.findBookingByUserAndStatusAndVoucher(user, status, voucher);
     }
     public List<IReportIncomeByMonth> reportIncomeByMonth(Integer id) {
         return bookingRepository.reportIncomeByMonth(id);

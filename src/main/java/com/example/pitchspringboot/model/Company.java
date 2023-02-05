@@ -2,8 +2,6 @@ package com.example.pitchspringboot.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 @Entity(name = "company")
 public class Company {
@@ -12,18 +10,18 @@ public class Company {
     @Column(name = "id")
     private Integer id;
     @Column(name = "`name`", nullable = false, columnDefinition = "varchar(100)")
-    @NotBlank(message = "{notempty}")
+    @NotBlank(message = "Không được để trống")
     private String name;
     @Column(name = "image", columnDefinition = "varchar(45)")
     private String image;
     @Column(name = "phone_number", nullable = false, columnDefinition = "varchar(12)")
-    @NotBlank(message = "{notempty}")
+    @NotBlank(message = "Không được để trống")
     private String phoneNumber;
     @Column(name = "email", columnDefinition = "varchar(100)")
-    @NotBlank(message = "{notempty}")
+    @NotBlank(message = "Không được để trống")
     private String email;
     @Column(name = "address", nullable = false, columnDefinition = "varchar(100)")
-    @NotBlank(message = "{notempty}")
+    @NotBlank(message = "Không được để trống")
     private String address;
     @Column(name = "map_url", columnDefinition = "varchar(800)")
     private String mapUrl;
@@ -32,7 +30,7 @@ public class Company {
     private Location location;
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false)
-//    @NotNull(message = "{notempty}")
+//    @NotNull(message = "Không được để trống")
     private User user;
     @Column(name = "datetime_created")
     private String dateTimeCreated;

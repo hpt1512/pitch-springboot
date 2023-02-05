@@ -11,25 +11,25 @@ public class User {
     @Column(name = "id")
     private Integer id;
     @Column(name = "username", nullable = false, columnDefinition = "varchar(15)")
-    @NotBlank(message = "{notempty}")
-    @Size(min = 5, max = 15, message = "{username.size}")
+    @NotBlank(message = "Không được để trống")
+    @Size(min = 5, max = 15, message = "Tên đăng nhập phải có độ dài từ 5 đến 15 ký tự")
     private String username;
     @Column(name = "`password`", nullable = false, columnDefinition = "varchar(45)")
-    @Size(min = 5, message = "{password.size}")
+    @Size(min = 5, message = "Mật khẩu phải có 5 ký tự trở lên")
     private String password;
     @Column(name = "full_name", nullable = false, columnDefinition = "varchar(100)")
-    @NotBlank(message = "{notempty}")
+    @NotBlank(message = "Không được để trống")
     private String fullName;
     @Column(name = "image", columnDefinition = "varchar(45)")
     private String image;
     @Column(name = "phone_number", nullable = false, columnDefinition = "varchar(12)")
-    @NotBlank(message = "{notempty}")
+    @NotBlank(message = "Không được để trống")
     private String phoneNumber;
     @Column(name = "email", columnDefinition = "varchar(100)")
-    @NotBlank(message = "{notempty}")
+    @NotBlank(message = "Không được để trống")
     private String email;
     @Column(name = "address", columnDefinition = "varchar(100)")
-    @NotBlank(message = "{notempty}")
+    @NotBlank(message = "Không được để trống")
     private String address;
     @Column(name = "`point`", columnDefinition = "int default 0")
     private Integer point;

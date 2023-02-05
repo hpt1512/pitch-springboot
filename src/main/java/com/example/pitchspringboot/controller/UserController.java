@@ -2,9 +2,7 @@ package com.example.pitchspringboot.controller;
 
 import com.example.pitchspringboot.model.Booking;
 import com.example.pitchspringboot.model.Comment;
-import com.example.pitchspringboot.model.Company;
 import com.example.pitchspringboot.model.User;
-import com.example.pitchspringboot.service.IBaseService;
 import com.example.pitchspringboot.service.impl.BookingServiceImpl;
 import com.example.pitchspringboot.service.impl.CommentServiceImpl;
 import com.example.pitchspringboot.service.impl.UserServiceImpl;
@@ -19,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/user")
@@ -82,13 +81,6 @@ public class UserController {
         return "user/info";
     }
 
-    @GetMapping("/change-password")
-    public String changePassword(Model model) {
-        User userSession = (User) session.getAttribute("user");
-        model.addAttribute("user", userSession);
-        return "user/change-password";
-    }
-
     @PostMapping("/comment")
     public String comment(@ModelAttribute("comment")Comment comment, RedirectAttributes redirectAttributes) {
        if ("".equals(comment.getContent().trim())) {
@@ -129,5 +121,38 @@ public class UserController {
         model.addAttribute("user", userSession);
         model.addAttribute("userView", userService.findById(id));
         return "user/view-user";
+    }
+
+    @GetMapping("/change-password")
+    public String changePassword(Model model) {
+        User userSession = (User) session.getAttribute("user");
+        model.addAttribute("user", userSession);
+        return "user/change-password";
+    }
+
+    @PostMapping("/change-password")
+    public String doChangePassword(@RequestParam String newPassword,
+                                   @RequestParam String oldPassword,
+                                   @RequestParam String newPasswordAgain,
+                                   Model model) {
+        User userSession = (User) session.getAttribute("user");
+        userService.changePassword(newPassword, userSession.getId());
+        if (!Objects.equals(oldPassword, userSession.getPassword())) {
+            model.addAttribute("messErr", "Mật khẩu cũ không đúng");
+            return "/user/change-password";
+        }
+        if (!Objects.equals(newPassword, newPasswordAgain)) {
+            model.addAttribute("messErr", "Hai mật khẩu không khớp nhau, vui lòng kiểm tra lại");
+            return "/user/change-password";
+        }
+        if ("".equals(newPassword)) {
+            model.addAttribute("messErr", "Nhập mật khẩu mới");
+            return "/user/change-password";
+        }
+        model.addAttribute("mess", "Thay đổi mật khấu thành công");
+        User userUpdated = userService.findById(userSession.getId());
+        session.setAttribute("user", userUpdated);
+        model.addAttribute("user", userSession);
+        return "/user/change-password";
     }
 }
