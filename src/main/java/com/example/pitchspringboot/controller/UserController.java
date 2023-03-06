@@ -42,6 +42,7 @@ public class UserController {
 
         List<Booking> bookingList = bookingService.findByUser(userSession);
         model.addAttribute("bookingList", bookingList);
+        model.addAttribute("timeList", timeList);
 
         return "user/mybooking";
     }

@@ -21,4 +21,6 @@ UPDATE
 - UTF-8
 - update image
 - update booking (OK)
+  
+- pattern="(d{3})([.])(d{2})"
 
